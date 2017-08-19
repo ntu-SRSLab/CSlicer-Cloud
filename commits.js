@@ -1,13 +1,14 @@
 const git = require("nodegit");
-const os = require("os");
-const path = require("path");
+// const path = require("path");
+const tmp = require("tmp");
+
 var _cachedRepos = {};
 var _lastFetch = {};
 
 function cloneRepo(owner, repo){
     var promise;
     var url = "https://github.com/" + owner + "/" + repo;
-    var rpath = path.join(os.tmpdir(), repo);
+    var rpath = tmp.tmpNameSync();
     if(repo in _cachedRepos){
 	console.log("Fetching cached repo " + url);
 	promise = new Promise((res)=>{res( _cachedRepos[repo]);});

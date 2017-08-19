@@ -14,11 +14,12 @@
         "express": "^4.15.4",
         "express-session": "^1.15.5",
         "git-flow-vis": "github:liyistc/git-flow-vis#develop",
-        "github": "^9.1.0",
+        "github": "^9.3.0",
         "mustache": "^2.3.0",
         "mustache-express": "^1.2.5",
         "nodegit": "^0.17.0",
         "passport": "^0.4.0",
-        "passport-github2": "^0.1.10"
+        "passport-github2": "^0.1.10",
+        "tmp": "0.0.33"
     }
 }
