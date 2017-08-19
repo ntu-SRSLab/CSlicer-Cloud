@@ -1,6 +1,16 @@
 const git = require("nodegit");
+const os = require("os");
+const path = require("path");
 var _cachedRepos = {};
 var _lastFetch = {};
+
+function cloneRepo(owner, repo){
+    var promise;
+    var url = "https://github.com/" + owner + "/" + repo;
+    var rpath = path.join(os.tmpdir(), repo);
+    console.log("Cloning " + url + " into " + rpath);
+    return git.Clone(url, rpath);
+}
 function getCachedRepo(repo, options){
     var promise;
     if(repo in _cachedRepos){
@@ -27,8 +37,6 @@ function getCachedRepo(repo, options){
         });
     }
     return promise;
-
-
 }
 function getBaseCommitData(repo, options){
     var result = {branches:{values:[]}, tags:{values:[]}, commits:[]};
@@ -150,7 +158,8 @@ function getAncestorsFor(repo, root){
 }
 
 module.exports = {
-    getBaseCommitData:getBaseCommitData,
+    cloneRepo: cloneRepo,
+    getBaseCommitData: getBaseCommitData,
     getAncestorsFor: getAncestorsFor,
     getBranchTips: getAllBranchTips
 }

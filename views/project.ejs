@@ -1,0 +1,31 @@
+<!-- views/project.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>project selection</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body        { padding-top:80px; }
+    </style>
+</head>
+<body>
+  <div class="container">
+    
+    <div class="well text-center">
+        <h3>Pick a repository to get started: <a href="<%= profile %>"> <%= username %></a></h1>
+    </div>
+
+    <ul class="list-group text-center">
+      <%
+	repos.forEach(function(repo) { %>
+      <a href="/clone?owner=<%= username %>&repo=<%= repo.name %>" class="list-group-item">
+	<i class="fa fa-code-fork" aria-hidden="true"></i>
+	<%= repo.name %> - <%= repo.url %></a>
+      <% });
+	 %>
+    </ul>
+
+</div>
+</body>
+</html>

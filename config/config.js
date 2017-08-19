@@ -2,7 +2,6 @@ const commandLineArgs = require('command-line-args');
 const optionDefinitions = [
   { name: 'repo', alias: 'r', type: String, defaultOption: true },
   { name: 'remotes', type:Boolean, defaultValue: false},
-
   { name: 'masterRef', type: String},
   { name: 'developRef', type: String},
   { name: 'featurePrefix', type: String},

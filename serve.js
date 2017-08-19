@@ -18,13 +18,23 @@ along with git-flow-json-commits. If not, see <http://www.gnu.org/licenses/>.
 
 var express = require('express')
 var mustacheExpress = require('mustache-express');
-const commits = require('./commits');
- 
-const options = require('./config.js')([
-  { name: 'username', alias: 'u', type: String},
-  { name: 'password', alias: 'p', type: String},
-]);
+var passport = require('passport');
+var session = require('express-session');
 
+var GitHubApi = require("github");
+var github = new GitHubApi({
+    debug: true
+});
+
+const commits = require('./commits');
+var GitHubStrategy = require('passport-github2').Strategy;
+// load the auth variables
+var configAuth = require('./config/auth.js');
+
+const options = require('./config/config.js')([
+    { name: 'username', alias: 'u', type: String},
+    { name: 'password', alias: 'p', type: String},
+]);
 
 var app = express()
 app.engine('html', mustacheExpress());
@@ -32,14 +42,78 @@ app.engine('html', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
+// required for passport
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
+passport.use(new GitHubStrategy({
+    clientID: configAuth.githubAuth.clientID,
+    clientSecret: configAuth.githubAuth.clientSecret,
+    callbackURL: configAuth.githubAuth.callbackURL,
+}, function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+	// console.log("TOKEN: " + accessToken);
+	github.authenticate({
+	    type: "oauth",
+	    token: accessToken
+	});
+	return done(null, profile);
+    });
+}));
+
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(express.static(__dirname + '/public'));
 app.use('/gfv', express.static('node_modules/git-flow-vis/dist'));
 
 app.get('/', function(req, res){
+    res.render('index.ejs');
+});
+
+app.get('/auth/github', passport.authenticate('github', {
+    scope : ["user:email"] }), function(req, res){
+    });
+
+app.get('/auth/github/callback', passport.authenticate('github', {
+    successRedirect : '/project',
+    failureRedirect : '/'
+}));
+
+app.get('/project', function(req, res){
+    github.repos.getAll({
+	visibility: 'public'
+    }, function(err, result) {
+	// console.log(req.user);
+	res.render('project.ejs', {
+	    username: req.user.username,
+	    profile: req.user.profileUrl,
+	    repos: result.data
+	});
+    });
+});
+
+app.get('/chart', function(req, res){
     var data = options;
     data.moreDataCallback = true;
     data.mainDataUrl = "/commits/";
     res.render('chart.html', data);
 });
+
+app.get('/clone/', function(req, res){
+    commits.cloneRepo(req.query['owner'], req.query['repo'])
+	.then((result)=>{
+	    console.log("Rendering charts...");
+	    options.repo = result.path();
+	    res.redirect('/chart');
+	});
+})
 app.get('/commits/', function(req, res){
     commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
         .then((result)=>{
