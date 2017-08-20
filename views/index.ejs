@@ -10,15 +10,65 @@
     </style>
 </head>
 <body>
-<div class="container">
-
+  <div class="container">
     <div class="jumbotron text-center">
         <h1>CSlicer Cloud</h1>
-
-        <p><span class="fa fa-lock"></span> Login with your GitHub Account:</p>
+	<p class="lead">A semantic history slicing service for Java projects hosted on GitHub.</p>
+	<br>
+	<p><span class="fa fa-lock"></span> Login with your GitHub Account:</p>
         <a href="/auth/github" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
     </div>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3 class="text-primary">CSlicer</h3>
+        <p><em>CSlicer</em> is a static history slicing technique based on dependency analysis. It mostly relies on static analysis of dependencies between change sets and is therefore much cheaper in terms of running time. CSlicer requires only a one-time effort for compilation and test execution.</p>
+        <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2015/" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+        <h3 class="text-primary">Definer</h3>
+        <p><em>Definer</em> performs dynamic slicing through delta refinement. It executes tests multiple times and observes the test results while attempting to shorten the history slices iteratively. The semantic slices found by the dynamic approach are guaranteed to be minimal, but the running time is usually much longer.</p>
+        <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2016/" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+        <h3 class="text-primary">FHistorian</h3>
+        <p><em>FHistorian</em> identifies feature and feature relationships in version histories with the precence of feature tests. It builds feature relationship graph which is very useful for understanding dependencies and connections between features from an evolutionary view point.</p>
+        <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-splc-2017/" role="button">View details &raquo;</a></p>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <div class="container">
+    <div class="section">
+      <h1 class="text-center">Publications</h1>
+      <div class="row">
+	<ul class="col-sm-10 col-sm-offset-1">
+	<li><p><b>Semantic Slicing of Software Version Histories</b></p>
+	  <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+	    <i>Transactions on Software Engineering, IEEE, accepted.</i></p>
+	</li>
+	<li><p><b>FHistorian: Locating Features in Version Histories</b></p>
+	  <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+	    <i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
+	<li><p><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></p>
+	  <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+	    <i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
+	<li><p><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></p>
+	  <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+	    <i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
+	<li><p><b>Semantic Slicing of Software Version Histories</b></p>
+	  <p>Yi Li, Julia Rubin and Marsha Chechik.
+	    <i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
+	      This paper won an ACM Distinguished Paper Award.</i></p>
+	</ul>
+      </div>
+    </div>
+
+    <hr>
+    <footer id="footer">
+      <p class="text-center">© University of Toronto 2017</p>
+    </footer>
 </body>
 </html>
