@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>login</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <style>
         body        { padding-top:80px; }
@@ -12,15 +12,18 @@
 <body>
   <div class="container">
     <div class="jumbotron text-center">
-        <h1>CSlicer Cloud</h1>
-	<p class="lead">A semantic history slicing service for Java projects hosted on GitHub.</p>
-	<br>
-	<p><span class="fa fa-lock"></span> Login with your GitHub Account:</p>
-        <a href="/auth/github" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+      <h1>CSlicer Cloud</h1>
+      <p class="lead">A semantic history slicing service for Java projects hosted on GitHub.</p>
+      <br>
+      <p><span class="fa fa-lock"></span> Login with your GitHub Account:</p>
+      <a href="/auth/github" class="btn btn-primary btn-lg"><span class="fa fa-user"></span> Login</a>
     </div>
   </div>
+
+  <hr>
   
   <div class="container">
+    <h1 class="text-center text-primary">About</h1>
     <div class="row">
       <div class="col-md-4">
         <h3 class="text-primary">CSlicer</h3>
@@ -40,35 +43,38 @@
     </div>
   </div>
 
+  <hr>
+  
   <div class="container">
-    <div class="section">
-      <h1 class="text-center">Publications</h1>
+    <div class="">
+      <h1 class="text-center text-primary">Publications</h1>
       <div class="row">
 	<ul class="col-sm-10 col-sm-offset-1">
-	<li><p><b>Semantic Slicing of Software Version Histories</b></p>
-	  <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
-	    <i>Transactions on Software Engineering, IEEE, accepted.</i></p>
-	</li>
-	<li><p><b>FHistorian: Locating Features in Version Histories</b></p>
-	  <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
-	    <i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
-	<li><p><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></p>
-	  <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
-	    <i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
-	<li><p><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></p>
-	  <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
-	    <i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
-	<li><p><b>Semantic Slicing of Software Version Histories</b></p>
-	  <p>Yi Li, Julia Rubin and Marsha Chechik.
-	    <i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
-	      This paper won an ACM Distinguished Paper Award.</i></p>
+	  <li><h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
+	    <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+	      <i>Transactions on Software Engineering, IEEE, accepted.</i></p>
+	  </li>
+	  <li><h4 class="text-primary"><b>FHistorian: Locating Features in Version Histories</b></h4>
+	    <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+	      <i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
+	  <li><h4 class="text-primary"><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></h4>
+	    <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+	      <i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
+	  <li><h4 class="text-primary"><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></h4>
+	    <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+	      <i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
+	  <li><h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
+	    <p>Yi Li, Julia Rubin and Marsha Chechik.
+	      <i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
+		This paper won an ACM Distinguished Paper Award.</i></p>
 	</ul>
       </div>
     </div>
+  </div>
 
-    <hr>
-    <footer id="footer">
-      <p class="text-center">© University of Toronto 2017</p>
-    </footer>
+  <hr>
+  <footer id="footer">
+    <p class="text-center">© University of Toronto 2017</p>
+  </footer>
 </body>
 </html>
