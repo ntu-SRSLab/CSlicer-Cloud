@@ -25,6 +25,9 @@
   <div class="container">
     <h1 class="text-center text-primary">About</h1>
     <div class="row">
+      <p class="lead text-center">CSlicer Cloud is a web-based framework powering a collection of <em>semantic history slicing</em> techniques.
+    </div>
+    <div class="row">
       <div class="col-md-4">
         <h3 class="text-primary">CSlicer</h3>
         <p><em>CSlicer</em> is a static history slicing technique based on dependency analysis. It mostly relies on static analysis of dependencies between change sets and is therefore much cheaper in terms of running time. CSlicer requires only a one-time effort for compilation and test execution.</p>
@@ -46,13 +49,13 @@
   <hr>
 
   <div class="container">
-    <h1 class="text-center text-primary">Techniques</h1>
+    <h1 class="text-center text-primary">Under the Hood</h1>
     <div class="row">
       <div class="col-md-6">
 	<div class="thumbnail">
           <img src="/images/static-slice.jpeg" alt="static" style="width:80%">
           <div class="caption">
-            <p>Static history slicing instruments </p>
+            <p>Static history slicing first runs the target tests and computes a <em>functional set</em> and a <em>compilation set</em> which correspond to the atomic changes necessary for preserving the semantics and the well-formedness of the target functionality. Then it goes through each commit to decide if it is relevant or not, based on precomputed dependencies.</p>
           </div>
 	</div>
       </div>
@@ -60,7 +63,7 @@
 	<div class="thumbnail">
           <img src="/images/dynamic-slice.jpeg" alt="dynamic" style="width:89%">
           <div class="caption">
-            <p>Lorem ipsum...</p>
+            <p>Dynamic history slicing partitions the input history by dropping some subset of the commits and opportunistically reduces the search space when the target tests pass on one of the partitions, until a minimal partition is reached. It also uses observed test pass/fail signals and dynamic program invariants to predict the significance of change sets with respect to the target tests.</p>
           </div>
 	</div>
       </div>

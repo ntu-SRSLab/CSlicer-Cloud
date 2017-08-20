@@ -23,7 +23,7 @@ var session = require('express-session');
 
 var GitHubApi = require("github");
 var github = new GitHubApi({
-    debug: true
+    debug: false
 });
 
 const commits = require('./commits');
@@ -58,7 +58,6 @@ passport.use(new GitHubStrategy({
 }, function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-	// console.log("TOKEN: " + accessToken);
 	github.authenticate({
 	    type: "oauth",
 	    token: accessToken
@@ -90,7 +89,6 @@ app.get('/project', function(req, res){
     github.repos.getAll({
 	visibility: 'public'
     }, function(err, result) {
-	// console.log(req.user);
 	res.render('project.ejs', {
 	    username: req.user.username,
 	    profile: req.user.profileUrl,
