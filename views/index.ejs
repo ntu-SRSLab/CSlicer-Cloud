@@ -1,14 +1,20 @@
 <!-- views/index.ejs -->
 <!doctype html>
 <html>
+
 <head>
-    <title>login</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <style>
-        body        { padding-top:80px; }
-    </style>
+  <title>login</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+  <!-- load bootstrap css -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <!-- load fontawesome -->
+  <style>
+    body {
+      padding-top: 80px;
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <div class="jumbotron text-center">
@@ -20,27 +26,33 @@
     </div>
   </div>
 
-  <hr>
-  
   <div class="container">
-    <h1 class="text-center text-primary">About</h1>
+    <div class="page-header">
+      <h1 class="text-center text-primary">About</h1>
+    </div>
     <div class="row">
       <p class="lead text-center">CSlicer Cloud is a web-based framework powering a collection of <em>semantic history slicing</em> techniques.
     </div>
     <div class="row">
       <div class="col-md-4">
         <h3 class="text-primary">CSlicer</h3>
-        <p><em>CSlicer</em> is a static history slicing technique based on dependency analysis. It mostly relies on static analysis of dependencies between change sets and is therefore much cheaper in terms of running time. CSlicer requires only a one-time effort for compilation and test execution.</p>
+        <p><em>CSlicer</em> is a static history slicing technique based on dependency analysis. It mostly relies on static analysis
+          of dependencies between change sets and is therefore much cheaper in terms of running time. CSlicer requires only
+          a one-time effort for compilation and test execution.</p>
         <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2015/" role="button">View details &raquo;</a></p>
       </div>
       <div class="col-md-4">
         <h3 class="text-primary">Definer</h3>
-        <p><em>Definer</em> performs dynamic slicing through delta refinement. It executes tests multiple times and observes the test results while attempting to shorten the history slices iteratively. The semantic slices found by the dynamic approach are guaranteed to be minimal, but the running time is usually much longer.</p>
+        <p><em>Definer</em> performs dynamic slicing through delta refinement. It executes tests multiple times and observes
+          the test results while attempting to shorten the history slices iteratively. The semantic slices found by the dynamic
+          approach are guaranteed to be minimal, but the running time is usually much longer.</p>
         <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2016/" role="button">View details &raquo;</a></p>
       </div>
       <div class="col-md-4">
         <h3 class="text-primary">FHistorian</h3>
-        <p><em>FHistorian</em> identifies feature and feature relationships in version histories with the precence of feature tests. It builds feature relationship graph which is very useful for understanding dependencies and connections between features from an evolutionary view point.</p>
+        <p><em>FHistorian</em> identifies feature and feature relationships in version histories with the precence of feature
+          tests. It builds feature relationship graph which is very useful for understanding dependencies and connections
+          between features from an evolutionary view point.</p>
         <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-splc-2017/" role="button">View details &raquo;</a></p>
       </div>
     </div>
@@ -49,52 +61,65 @@
   <hr>
 
   <div class="container">
-    <h1 class="text-center text-primary">Under the Hood</h1>
+    <div class="page-header">
+      <h1 class="text-center text-primary">Under the Hood</h1>
+    </div>
     <div class="row">
       <div class="col-md-5 col-md-offset-1">
-	<div class="thumbnail">
+        <div class="thumbnail">
           <img src="/images/static-slice.jpeg" alt="static" style="width:80%">
           <div class="caption">
-            <p>Static history slicing first runs the target tests and computes a <em>functional set</em> and a <em>compilation set</em> which correspond to the atomic changes necessary for preserving the semantics and the well-formedness of the target functionality. Then it goes through each commit to decide if it is relevant or not, based on precomputed dependencies.</p>
+            <p>Static history slicing first runs the target tests and computes a <em>functional set</em> and a <em>compilation set</em>              which correspond to the atomic changes necessary for preserving the semantics and the well-formedness of the
+              target functionality. Then it goes through each commit to decide if it is relevant or not, based on precomputed
+              dependencies.
+            </p>
           </div>
-	</div>
+        </div>
       </div>
       <div class="col-md-5">
-	<div class="thumbnail">
+        <div class="thumbnail">
           <img src="/images/dynamic-slice.jpeg" alt="dynamic" style="width:89%">
           <div class="caption">
-            <p>Dynamic history slicing partitions the input history by dropping some commits and opportunistically reduces the search space when the target tests pass on one of the partitions, until a minimal partition is reached. It also uses observed test pass/fail signals and dynamic program invariants to predict the significance of changes with respect to the target tests.</p>
+            <p>Dynamic history slicing partitions the input history by dropping some commits and opportunistically reduces the
+              search space when the target tests pass on one of the partitions, until a minimal partition is reached. It
+              also uses observed test pass/fail signals and dynamic program invariants to predict the significance of changes
+              with respect to the target tests.</p>
           </div>
-	</div>
+        </div>
       </div>
     </div>
   </div>
-    
-  <hr>
-  
+
   <div class="container">
     <div class="section">
-      <h1 class="text-center text-primary">Publications</h1>
+      <div class="page-header">
+        <h1 class="text-center text-primary">Publications</h1>
+      </div>
       <div class="row">
-	<ul class="col-sm-10 col-sm-offset-1">
-	  <li><h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
-	    <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
-	      <i>Transactions on Software Engineering, IEEE, accepted.</i></p>
-	  </li>
-	  <li><h4 class="text-primary"><b>FHistorian: Locating Features in Version Histories</b></h4>
-	    <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
-	      <i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
-	  <li><h4 class="text-primary"><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></h4>
-	    <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
-	      <i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
-	  <li><h4 class="text-primary"><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></h4>
-	    <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
-	      <i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
-	  <li><h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
-	    <p>Yi Li, Julia Rubin and Marsha Chechik.
-	      <i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
+        <ul class="col-sm-10 col-sm-offset-1">
+          <li>
+            <h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
+            <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+              <i>Transactions on Software Engineering, IEEE, accepted.</i></p>
+          </li>
+          <li>
+            <h4 class="text-primary"><b>FHistorian: Locating Features in Version Histories</b></h4>
+            <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+              <i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
+            <li>
+              <h4 class="text-primary"><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></h4>
+              <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+                <i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
+              <li>
+                <h4 class="text-primary"><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></h4>
+                <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+                  <i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
+                <li>
+                  <h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
+                  <p>Yi Li, Julia Rubin and Marsha Chechik.
+                    <i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
 		This paper won an ACM Distinguished Paper Award.</i></p>
-	</ul>
+        </ul>
       </div>
     </div>
   </div>

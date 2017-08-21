@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="gfv/gitflow-visualize.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-    <style>
-      .aui-avatar-xsmall .aui-avatar-inner img {
-      max-height: 12px;
-      max-width: 12px;
-      }
-      .aui-lozenge {
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="gfv/gitflow-visualize.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/themes/proton/style.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<style>
+		.aui-avatar-xsmall .aui-avatar-inner img {
+			max-height: 12px;
+			max-width: 12px;
+		}
+
+		.aui-lozenge {
 			background: #cccccc;
 			border: 1px solid #cccccc;
 			border-radius: 3px;
@@ -23,32 +27,38 @@
 			text-align: center;
 			text-decoration: none;
 			text-transform: uppercase;
-			}
-    	.aui-lozenge-subtle {
+		}
+
+		.aui-lozenge-subtle {
 			background-color: #ffffff;
-    	}
-			.aui-lozenge-complete{
+		}
+
+		.aui-lozenge-complete {
 			border-color: #a5b3c2;
 			color: #4a6785;
-			}
-			.aui-lozenge-error {
+		}
+
+		.aui-lozenge-error {
 			border-color: #e8a29b;
 			color: #d04437;
-			}
-    	.aui-lozenge-current {
-    		border-color: #ffe9a8;
-    		color: #594300;
-    	}
-			.aui-lozenge-success{
+		}
+
+		.aui-lozenge-current {
+			border-color: #ffe9a8;
+			color: #594300;
+		}
+
+		.aui-lozenge-success {
 			border-color: #60b070;
 			color: #14892c;
-			}
-			body {
+		}
+
+		body {
 			color: #333333;
-			font-family: Arial,sans-serif;
+			font-family: Arial, sans-serif;
 			font-size: 14px;
 			line-height: 1.42857142857143;
-			}
+		}
 
 		#drawhere {
 			height: 500px;
@@ -56,151 +66,150 @@
 		}
 
 		#jstree {
+			padding: 10px;
 			position: static;
-          		bottom: 100;
-         		right: 100;
+			max-width: 100px;
 		}
-    </style>
+	</style>
 
-    <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
-    <script src="gfv/gitflow-visualize.bundle.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-    
-    <script>
-      function goTo() {	
-      $.ajax({
-      url: "http://localhost/cgi-bin/modify-pom.py",
-      type: "post",
-      datatype: "html",
-      data: {endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value},
-      success: function(response){
-      GitFlowVisualize.drawing.annotateResults(response);
-      console.log("There is a response"); 
-      console.log(response);
-      }
-      });
-      }
-    </script>
-</head>
+	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+	<script src="gfv/gitflow-visualize.bundle.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="/assets/jstree.min.js"></script>
 
-<body>
-	<lable for="endcommit">End Commit: </lable>
-	<input type="text" name="endcommit" id="endcommit" />
-	<lable for="startcommit">Start Commit: </lable>
-	<input type="text" name="startcommit" id="startcommit" />
-	<lable for="testcases"> Test Cases: </lable>
-	<input type="text" name="testcases" id="testcases" />
-	
-	<button onClick=goTo()>Submit</button>
-	
-	<div id="jstree"></div>
-	<div id="drawhere"></div>	
-</body>
-
-    <script>
-      var element = document.getElementById('drawhere');
-      var dataCallback = function (done) { 
-         var xhr = new XMLHttpRequest();
-         xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-               done(JSON.parse(xhr.responseText));
-               setInterval(updateBrancheTips, 30000);
-            }
-         }
-		xhr.open("GET", "{{& mainDataUrl}}")
-		xhr.send(null);
-	}
-		var updateBrancheTips = function(){
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == XMLHttpRequest.DONE) {
-					GitFlowVisualize.branches.setChanged(JSON.parse(xhr.responseText));
+	<script>
+		function goTo() {
+			$.ajax({
+				url: "http://localhost/cgi-bin/modify-pom.py",
+				type: "post",
+				datatype: "html",
+				data: { endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value },
+				success: function (response) {
+					GitFlowVisualize.drawing.annotateResults(response);
+					console.log("There is a response");
+					console.log(response);
 				}
-			}
-			xhr.open("GET", "/branches/");
-			xhr.send(null);
-		}
-		var moreDataCallback = function (from, done) {
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == XMLHttpRequest.DONE) {
-					done(JSON.parse(xhr.responseText), from);
-				}
-			}
-			xhr.open("GET", "/commits/from/" + from);
-			xhr.send(null);
-		};
-		var commitUrl = function(commit){
-			return "{{& commitUrlTemplate}}".replace("#sha#", commit.id);
-		}
-		var log = function(level, msg){
-			switch (level) {
-				case "ERROR":
-					console.error(msg);
-					break;
-				case "WARN":
-					console.warn(msg);
-					break;
-				default:
-					console.log(level + ": ", msg);
-			}
-		}
-		
-		var test = function(){
-			console.log("call-back");		
-		}
-
-		GitFlowVisualize.draw(element,
-						{
-							dataCallback: dataCallback,
-							log: log,
-							{{#moreDataCallback}}moreDataCallback: moreDataCallback,{{/moreDataCallback}}
-							{{#masterRef}}masterRef: "{{& masterRef}}",{{/masterRef}}
-							{{#developRef}}developRef: "{{& developRef}}",{{/developRef}}
-							{{#featurePrefix}}featurePrefix: "{{& featurePrefix}}",{{/featurePrefix}}
-							{{#releasePrefix}}releasePrefix: "{{& releasePrefix}}",{{/releasePrefix}}
-							{{#hotfixPrefix}}hotfixPrefix: "{{& hotfixPrefix}}",{{/hotfixPrefix}}
-							{{#releaseZonePattern}}releaseZonePattern: /{{& releaseZonePattern}}/,{{/releaseZonePattern}}
-							{{#releaseTagPattern}}releaseTagPattern: /{{& releaseTagPattern}}/,{{/releaseTagPattern}}
-							{{#releaseTagPattern}}releaseTagPattern: /{{& releaseTagPattern}}/,{{/releaseTagPattern}}
-							{{#commitUrlTemplate}}createCommitUrl: commitUrl,{{/commitUrlTemplate}}
-						});
-						
-    </script>
-
-    <script>
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
-          if (xhr.readyState == XMLHttpRequest.DONE) {
-	     	 console.log(xhr.responseText);
-	      	drawTree(JSON.parse(xhr.responseText));
-          }
-      }
-      xhr.open("GET", "/tests/");
-      xhr.send(null);
-	  
-	  function drawTree (data) {
-			$('#jstree').jstree({ 
-				"plugins" : [ "checkbox" ],
-				'core' : { 'data' : data } 
 			});
 		}
 	</script>
-	
-    <script>
-	$(function () {
-			$('#jstree').on("changed.jstree", function (e, data) {
-				var i, j, r = [];
-    			for(i = 0, j = data.selected.length; i < j; i++) {
-      				r.push(data.instance.get_node(data.selected[i]).text);
-    			}
-				document.getElementById('testcases').value = r.join(', ');
+</head>
 
-				$('#jstree').jstree(true).open_node (data.selected);
-			});				
-		});
-	</script>
-    
+<body>
+	<div class="row">
+		<input type="text" class="form-control" placeholder="Start" name="startcommit" id="startcommit" />
+		<input type="text" class="form-control" placeholder="End" name="endcommit" id="endcommit" />
+		<input type="text" class="form-control" placeholder="Test" name="testcases" id="testcases" />
+		<button class="btn btn-default" type="button" onClick="goTo()">Submit</button>
+	</div>
+
+	<div id="jstree"></div>
+	<div id="drawhere"></div>
+</body>
+
+<script>
+	var element = document.getElementById('drawhere');
+	var dataCallback = function (done) {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				done(JSON.parse(xhr.responseText));
+				setInterval(updateBrancheTips, 30000);
+			}
+		}
+		xhr.open("GET", "{{& mainDataUrl}}")
+		xhr.send(null);
+	}
+	var updateBrancheTips = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				GitFlowVisualize.branches.setChanged(JSON.parse(xhr.responseText));
+			}
+		}
+		xhr.open("GET", "/branches/");
+		xhr.send(null);
+	}
+	var moreDataCallback = function (from, done) {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				done(JSON.parse(xhr.responseText), from);
+			}
+		}
+		xhr.open("GET", "/commits/from/" + from);
+		xhr.send(null);
+	};
+	var commitUrl = function (commit) {
+		return "{{& commitUrlTemplate}}".replace("#sha#", commit.id);
+	}
+	var log = function (level, msg) {
+		switch (level) {
+			case "ERROR":
+				console.error(msg);
+				break;
+			case "WARN":
+				console.warn(msg);
+				break;
+			default:
+				console.log(level + ": ", msg);
+		}
+	}
+
+	var test = function () {
+		console.log("call-back");
+	}
+
+	GitFlowVisualize.draw(element,
+		{
+			dataCallback: dataCallback,
+			log: log,
+							{{#moreDataCallback }}moreDataCallback: moreDataCallback, {{/moreDataCallback}}
+		{{#masterRef }}masterRef: "{{& masterRef}}", {{/masterRef}}
+		{{#developRef }}developRef: "{{& developRef}}", {{/developRef}}
+		{{#featurePrefix }}featurePrefix: "{{& featurePrefix}}", {{/featurePrefix}}
+		{{#releasePrefix }}releasePrefix: "{{& releasePrefix}}", {{/releasePrefix}}
+		{{#hotfixPrefix }}hotfixPrefix: "{{& hotfixPrefix}}", {{/hotfixPrefix}}
+		{{#releaseZonePattern }}releaseZonePattern: /{{& releaseZonePattern}}/, {{/releaseZonePattern}}
+		{{#releaseTagPattern }}releaseTagPattern: /{{& releaseTagPattern}}/, {{/releaseTagPattern}}
+		{{#releaseTagPattern }}releaseTagPattern: /{{& releaseTagPattern}}/, {{/releaseTagPattern}}
+		{{#commitUrlTemplate }}createCommitUrl: commitUrl, {{/commitUrlTemplate}}
+						});
+</script>
+
+<script>
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				console.log(xhr.responseText);
+				drawTree(JSON.parse(xhr.responseText));
+			}
+		}
+		xhr.open("GET", "/tests/");
+		xhr.send(null);
+
+		function drawTree(data) {
+			$('#jstree').jstree({
+				"plugins": ["wholerow", "checkbox"],
+				"core": {
+					"data": data,
+					"themes": { "name": "proton", "responsive": true }
+				}
+			});
+		}
+</script>
+
+<script>
+	  $(function () {
+		  $('#jstree').on("changed.jstree", function (e, data) {
+			  var i, j, r = [];
+			  for (i = 0, j = data.selected.length; i < j; i++) {
+				  r.push(data.instance.get_node(data.selected[i]).text);
+			  }
+			  document.getElementById('testcases').value = r.join(', ');
+			  $('#jstree').jstree(true).open_node(data.selected);
+		  });
+	  });
+</script>
+
 </html>
