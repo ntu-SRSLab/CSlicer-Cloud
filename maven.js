@@ -18,7 +18,7 @@ function extractTests(repo_path){
 	    	});
 			mvnCompile.on('close', (code) => {
 				if (code !== 0) {
-					colsole.log('mvn compiler:compile failed');
+					console.log('mvn compiler:compile failed');
 					return;
 				}	
 	    		console.log("Runing mvn compiler:testCompile in " + repo_path + " ...");
