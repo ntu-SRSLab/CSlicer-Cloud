@@ -131,7 +131,9 @@
 		$('#jstree').on("changed.jstree", function (e, data) {
 			var i, j, r = [];
 			for (i = 0, j = data.selected.length; i < j; i++) {
-				r.push(data.instance.get_node(data.selected[i]).text);
+				if (data.selected[i].indexOf(".java") == -1) {
+					r.push(data.instance.get_node(data.selected[i]).text);
+				}
 			}
 			document.getElementById('testcases').value = r.join(', ');
 			$('#jstree').jstree(true).open_node(data.selected);
