@@ -5,8 +5,14 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="gfv/gitflow-visualize.css" />
 	<link rel="stylesheet" type="text/css" href="/assets/themes/proton/style.min.css" />
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="gfv/gitflow-visualize.bundle.js"></script>
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="/assets/jstree.min.js"></script>
+
 	<style>
 		.aui-avatar-xsmall .aui-avatar-inner img {
 			max-height: 12px;
@@ -54,57 +60,49 @@
 		}
 
 		body {
+			padding-top: 10px;
 			color: #333333;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
 			line-height: 1.42857142857143;
 		}
-
-		#drawhere {
-			height: 500px;
-			position: static;
-		}
-
-		#jstree {
-			padding: 10px;
-			position: static;
-			max-width: 100px;
-		}
 	</style>
-
-	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
-	<script src="gfv/gitflow-visualize.bundle.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://d3js.org/d3.v4.js"></script>
-	<script src="/assets/jstree.min.js"></script>
-
-	<script>
-		function goTo() {
-			$.ajax({
-				url: "http://localhost/cgi-bin/modify-pom.py",
-				type: "post",
-				datatype: "html",
-				data: { endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value },
-				success: function (response) {
-					GitFlowVisualize.drawing.annotateResults(response);
-					console.log("There is a response");
-					console.log(response);
-				}
-			});
-		}
-	</script>
 </head>
 
 <body>
-	<div class="row">
-		<input type="text" class="form-control" placeholder="Start" name="startcommit" id="startcommit" />
-		<input type="text" class="form-control" placeholder="End" name="endcommit" id="endcommit" />
-		<input type="text" class="form-control" placeholder="Test" name="testcases" id="testcases" />
-		<button class="btn btn-default" type="button" onClick="goTo()">Submit</button>
+	<div class="container">
+		<div class="well">
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="startcommit">Start commit:</label>
+					<input type="text" class="form-control" placeholder="Start" name="startcommit" id="startcommit" />
+				</div>
+				<div class="form-group">
+					<label for="endcommit">End commit:</label>
+					<input type="text" class="form-control" placeholder="End" name="endcommit" id="endcommit" />
+				</div>
+				<div class="form-group">
+					<label for="testcases">Test cases:</label>
+					<input type="text" class="form-control" placeholder="Test" name="testcases" id="testcases" />
+				</div>
+				<button class="btn btn-default" type="button" onClick="goTo()">Submit</button>
+			</form>
+		</div>
 	</div>
 
-	<div id="jstree"></div>
-	<div id="drawhere"></div>
+	<div class="container">
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#drawhere">History View</a></li>
+			<li><a data-toggle="tab" href="#jstree">Test View</a></li>
+			<li><a data-toggle="tab" href="#branch">Branch View</a></li>
+		</ul>
+
+		<div class="tab-content">
+			<div id="drawhere" class="tab-pane fade in active"></div>
+			<div id="jstree" class="tab-pane fade"></div>
+			<div id="branch" class="tab-pane"></div>
+		</div>
+	</div>
 </body>
 
 <script>
@@ -178,38 +176,53 @@
 </script>
 
 <script>
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState == XMLHttpRequest.DONE) {
-				console.log(xhr.responseText);
-				drawTree(JSON.parse(xhr.responseText));
-			}
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			drawTree(JSON.parse(xhr.responseText));
 		}
-		xhr.open("GET", "/tests/");
-		xhr.send(null);
+	}
+	xhr.open("GET", "/tests/");
+	xhr.send(null);
 
-		function drawTree(data) {
-			$('#jstree').jstree({
-				"plugins": ["wholerow", "checkbox"],
-				"core": {
-					"data": data,
-					"themes": { "name": "proton", "responsive": true }
-				}
-			});
-		}
+	function drawTree(data) {
+		$('#jstree').jstree({
+			"plugins": ["wholerow", "checkbox"],
+			"core": {
+				"data": data,
+				"themes": { "name": "proton", "responsive": true }
+			}
+		});
+	}
 </script>
 
 <script>
-	  $(function () {
-		  $('#jstree').on("changed.jstree", function (e, data) {
-			  var i, j, r = [];
-			  for (i = 0, j = data.selected.length; i < j; i++) {
-				  r.push(data.instance.get_node(data.selected[i]).text);
-			  }
-			  document.getElementById('testcases').value = r.join(', ');
-			  $('#jstree').jstree(true).open_node(data.selected);
-		  });
-	  });
+	$(function () {
+		$('#jstree').on("changed.jstree", function (e, data) {
+			var i, j, r = [];
+			for (i = 0, j = data.selected.length; i < j; i++) {
+				r.push(data.instance.get_node(data.selected[i]).text);
+			}
+			document.getElementById('testcases').value = r.join(', ');
+			$('#jstree').jstree(true).open_node(data.selected);
+		});
+	});
+</script>
+
+<script>
+	function goTo() {
+		$.ajax({
+			url: "http://localhost/cgi-bin/modify-pom.py",
+			type: "post",
+			datatype: "html",
+			data: { endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value },
+			success: function (response) {
+				GitFlowVisualize.drawing.annotateResults(response);
+				console.log("There is a response");
+				console.log(response);
+			}
+		});
+	}
 </script>
 
 </html>
