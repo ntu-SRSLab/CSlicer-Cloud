@@ -2,17 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
-    <script src="gfv/gitflow-visualize.bundle.js"></script>
     <link rel="stylesheet" type="text/css" href="gfv/gitflow-visualize.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-	    <style>
-		
-    	.aui-avatar-xsmall .aui-avatar-inner img {
-    		max-height: 12px;
-    		max-width: 12px;
-    	}
-			.aui-lozenge {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <style>
+      .aui-avatar-xsmall .aui-avatar-inner img {
+      max-height: 12px;
+      max-width: 12px;
+      }
+      .aui-lozenge {
 			background: #cccccc;
 			border: 1px solid #cccccc;
 			border-radius: 3px;
@@ -60,28 +57,34 @@
 
 		#jstree {
 			position: static;
-    		bottom: 100;
-    		right: 100;
+          		bottom: 100;
+         		right: 100;
 		}
-
     </style>
-	<script>
-		function goTo() {	
-			$.ajax({
-                url: "http://localhost/cgi-bin/modify-pom.py",
-                type: "post",
-                datatype: "html",
-                data: {endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value},
-                success: function(response){
-						GitFlowVisualize.drawing.annotateResults(response);
-                        console.log("There is a response"); 
-						console.log(response);
-                }
-            });
-  		}
-	</script>
 
+    <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+    <script src="gfv/gitflow-visualize.bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    
+    <script>
+      function goTo() {	
+      $.ajax({
+      url: "http://localhost/cgi-bin/modify-pom.py",
+      type: "post",
+      datatype: "html",
+      data: {endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value},
+      success: function(response){
+      GitFlowVisualize.drawing.annotateResults(response);
+      console.log("There is a response"); 
+      console.log(response);
+      }
+      });
+      }
+    </script>
 </head>
+
 <body>
 	<lable for="endcommit">End Commit: </lable>
 	<input type="text" name="endcommit" id="endcommit" />
@@ -92,74 +95,23 @@
 	
 	<button onClick=goTo()>Submit</button>
 	
-	<div id="jstree">
-		
-	</div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://d3js.org/d3.v4.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-	<script>
-		$.ajax({
-            url: "http://localhost/cgi-bin/tests_JSON.py",
-            type: "post",
-            datatype: "text",
-            success: function(response){
-				console.log(response);
-				splitArray = response.split('\n');
-				splitArray.shift();
-				splitArray.pop();
-				console.log(splitArray[0][0]);
-				drawTree();
-            }
-        });
-
-		function drawTree () {			
-			var JSONArray = new Array();
-
-			var i;
-			for (i = 0; i < splitArray.length-1; i++) {
-				var obj = JSON.parse(splitArray[i]);
-				JSONArray.push(obj);
-			}
-		
-			$('#jstree').jstree({ 'core' : {
-				'data' : JSONArray
-			} });
-		}
-	</script>
-	<script>
-	$(function () {
-			$('#jstree').on("changed.jstree", function (e, data) {
-				console.log($('#' + data.selected).text());
-				if($('#' + data.selected).text() != "test") {
-					document.getElementById('testcases').value += ',' + $('#' + data.selected).text();
-					if (document.getElementById('testcases').value.slice(0, 1) == ',') {
-						document.getElementById('testcases').value  = document.getElementById('testcases').value .substring(1);
-					}
-				}
-
-				$('#jstree').jstree(true).open_node (data.selected);
-				console.log($('#' + data.selected).text());
-			});				
-		});
-	</script>	
-
+	<div id="jstree"></div>
 	<div id="drawhere"></div>	
 </body>
+
     <script>
-		var element = document.getElementById('drawhere');
-		var dataCallback = function (done) { 
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == XMLHttpRequest.DONE) {
-					done(JSON.parse(xhr.responseText));
-					setInterval(updateBrancheTips, 30000);
-				}
-			}
-			xhr.open("GET", "{{& mainDataUrl}}")
-			xhr.send(null);
-		}
+      var element = document.getElementById('drawhere');
+      var dataCallback = function (done) { 
+         var xhr = new XMLHttpRequest();
+         xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+               done(JSON.parse(xhr.responseText));
+               setInterval(updateBrancheTips, 30000);
+            }
+         }
+		xhr.open("GET", "{{& mainDataUrl}}")
+		xhr.send(null);
+	}
 		var updateBrancheTips = function(){
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
@@ -218,4 +170,37 @@
 						
     </script>
 
+    <script>
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+	     	 console.log(xhr.responseText);
+	      	drawTree(JSON.parse(xhr.responseText));
+          }
+      }
+      xhr.open("GET", "/tests/");
+      xhr.send(null);
+	  
+	  function drawTree (data) {
+			$('#jstree').jstree({ 
+				"plugins" : [ "checkbox" ],
+				'core' : { 'data' : data } 
+			});
+		}
+	</script>
+	
+    <script>
+	$(function () {
+			$('#jstree').on("changed.jstree", function (e, data) {
+				var i, j, r = [];
+    			for(i = 0, j = data.selected.length; i < j; i++) {
+      				r.push(data.instance.get_node(data.selected[i]).text);
+    			}
+				document.getElementById('testcases').value = r.join(', ');
+
+				$('#jstree').jstree(true).open_node (data.selected);
+			});				
+		});
+	</script>
+    
 </html>

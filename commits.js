@@ -1,5 +1,4 @@
 const git = require("nodegit");
-// const path = require("path");
 const tmp = require("tmp");
 
 var _cachedRepos = {};

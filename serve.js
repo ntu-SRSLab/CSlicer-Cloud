@@ -27,6 +27,8 @@ var github = new GitHubApi({
 });
 
 const commits = require('./commits');
+const maven = require('./maven');
+
 var GitHubStrategy = require('passport-github2').Strategy;
 // load the auth variables
 var configAuth = require('./config/auth.js');
@@ -111,6 +113,13 @@ app.get('/clone/', function(req, res){
 	    options.repo = result.path();
 	    res.redirect('/chart');
 	});
+})
+app.get('/tests/', function(req, res){
+    maven.extractTests(require("path").dirname(options.repo)).then((result)=>{
+	res.type('json');
+	res.write(result);
+	res.end();
+    });
 })
 app.get('/commits/', function(req, res){
     commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
