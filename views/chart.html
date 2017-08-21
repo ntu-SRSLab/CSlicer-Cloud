@@ -106,6 +106,39 @@
 </body>
 
 <script>
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			console.log(xhr.responseText);
+			drawTree(JSON.parse(xhr.responseText));
+		}
+	}
+	xhr.open("GET", "/tests/");
+	xhr.send(null);
+
+	function drawTree(data) {
+		$('#jstree').jstree({
+			"plugins": ["wholerow", "checkbox"],
+			"core": {
+				"data": data,
+				"themes": { "name": "proton", "responsive": true }
+			}
+		});
+	}
+</script>
+<script>
+	$(function () {
+		$('#jstree').on("changed.jstree", function (e, data) {
+			var i, j, r = [];
+			for (i = 0, j = data.selected.length; i < j; i++) {
+				r.push(data.instance.get_node(data.selected[i]).text);
+			}
+			document.getElementById('testcases').value = r.join(', ');
+			$('#jstree').jstree(true).open_node(data.selected);
+		});
+	});
+</script>
+<script>
 	var element = document.getElementById('drawhere');
 	var dataCallback = function (done) {
 		var xhr = new XMLHttpRequest();
@@ -153,11 +186,6 @@
 				console.log(level + ": ", msg);
 		}
 	}
-
-	var test = function () {
-		console.log("call-back");
-	}
-
 	GitFlowVisualize.draw(element,
 		{
 			dataCallback: dataCallback,
@@ -174,48 +202,15 @@
 		{{#commitUrlTemplate }}createCommitUrl: commitUrl, {{/commitUrlTemplate}}
 						});
 </script>
-
-<script>
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState == XMLHttpRequest.DONE) {
-			drawTree(JSON.parse(xhr.responseText));
-		}
-	}
-	xhr.open("GET", "/tests/");
-	xhr.send(null);
-
-	function drawTree(data) {
-		$('#jstree').jstree({
-			"plugins": ["wholerow", "checkbox"],
-			"core": {
-				"data": data,
-				"themes": { "name": "proton", "responsive": true }
-			}
-		});
-	}
-</script>
-
-<script>
-	$(function () {
-		$('#jstree').on("changed.jstree", function (e, data) {
-			var i, j, r = [];
-			for (i = 0, j = data.selected.length; i < j; i++) {
-				r.push(data.instance.get_node(data.selected[i]).text);
-			}
-			document.getElementById('testcases').value = r.join(', ');
-			$('#jstree').jstree(true).open_node(data.selected);
-		});
-	});
-</script>
-
 <script>
 	function goTo() {
 		$.ajax({
 			url: "http://localhost/cgi-bin/modify-pom.py",
 			type: "post",
 			datatype: "html",
-			data: { endcommit: document.getElementById("endcommit").value, startcommit: document.getElementById("startcommit").value, testcases: document.getElementById("testcases").value },
+			data: { endcommit: document.getElementById("endcommit").value, 
+					startcommit: document.getElementById("startcommit").value, 
+					testcases: document.getElementById("testcases").value },
 			success: function (response) {
 				GitFlowVisualize.drawing.annotateResults(response);
 				console.log("There is a response");

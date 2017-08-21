@@ -115,11 +115,12 @@ app.get('/clone/', function(req, res){
 	});
 })
 app.get('/tests/', function(req, res){
-    maven.extractTests(require("path").dirname(options.repo)).then((result)=>{
-	res.type('json');
-	res.write(result);
-	res.end();
-    });
+    maven.extractTests(require("path").dirname(options.repo))
+        .then((result)=>{
+	        res.type('json');
+	        res.write(result);
+	        res.end();
+        });
 })
 app.get('/commits/', function(req, res){
     commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
