@@ -86,26 +86,23 @@ app.get('/auth/github/callback', passport.authenticate('github', {
     successRedirect : '/project',
     failureRedirect : '/'
 }));
-
 app.get('/project', function(req, res){
     github.repos.getAll({
-	visibility: 'public'
+	    visibility: 'public'
     }, function(err, result) {
-	res.render('project.ejs', {
-	    username: req.user.username,
-	    profile: req.user.profileUrl,
-	    repos: result.data
-	});
+	    res.render('project.ejs', {
+	        username: req.user.username,
+	        profile: req.user.profileUrl,
+	        repos: result.data
+	    });
     });
 });
-
-app.get('/chart', function(req, res){
+app.get('/chart/', function(req, res){
     var data = options;
     data.moreDataCallback = true;
     data.mainDataUrl = "/commits/";
     res.render('chart.html', data);
 });
-
 app.get('/clone/', function(req, res){
     commits.cloneRepo(req.query['owner'], req.query['repo'])
 	.then((result)=>{
@@ -113,7 +110,7 @@ app.get('/clone/', function(req, res){
 	    options.repo = result.path();
 	    res.redirect('/chart');
 	});
-})
+});
 app.get('/tests/', function(req, res){
     maven.extractTests(require("path").dirname(options.repo))
         .then((result)=>{
@@ -121,7 +118,7 @@ app.get('/tests/', function(req, res){
 	        res.write(result);
 	        res.end();
         });
-})
+});
 app.get('/commits/', function(req, res){
     commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
         .then((result)=>{
@@ -129,7 +126,7 @@ app.get('/commits/', function(req, res){
             res.write(JSON.stringify(result));
             res.end();
         });
-})
+});
 app.get('/branches/', function(req, res){
     commits.getBranchTips({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
         .then((branches)=>{
@@ -138,7 +135,7 @@ app.get('/branches/', function(req, res){
             res.write(JSON.stringify(result));
             res.end();
         });
-})
+});
 app.get('/commits/from/:commit', function (req, res) {
     var params = req.params;
     var root = params.commit;
@@ -148,11 +145,11 @@ app.get('/commits/from/:commit', function (req, res) {
             res.write(JSON.stringify({values:result}));
             res.end();
         });
-})
+});
 
 app.listen(3000, function () {
   console.log('Listening on port 3000');
   if(!options.username && options.remotes){
       console.log("No username provided, so we will not be able to automtically fetch new data from remotes.");
   }
-})
+});

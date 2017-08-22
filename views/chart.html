@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 	<script src="gfv/gitflow-visualize.bundle.js"></script>
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script src="/assets/jstree.min.js"></script>
@@ -71,22 +72,47 @@
 
 <body>
 	<div class="container">
-		<div class="well">
-			<form class="form-inline">
-				<div class="form-group">
-					<label for="startcommit">Start commit:</label>
-					<input type="text" class="form-control" placeholder="Start" name="startcommit" id="startcommit" />
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" href="#parameters">Slicing Parameters</a>
+				</h4>
+			</div>
+			<div id="parameters" class="panel-collapse collapse">
+				<div class="panel-body">
+					<form data-toggle="validator" role="form" onSubmit="goTo();return false;">
+						<div class="form-group">
+							<label class="control-label" for="startcommit">Start commit</label>
+							<input type="text" required class="form-control" data-error="Please choose a start commit." data-minlength="6" placeholder="Start"
+							 name="startcommit" id="startcommit" />
+							<div class="help-block with-errors"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="endcommit">End commit</label>
+							<input type="text" required class="form-control" data-error="Please choose an end commit." data-minlength="6" placeholder="End"
+							 name="endcommit" id="endcommit" />
+							<div class="help-block with-errors"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="testcases">Test cases</label>
+							<input type="text" required required class="form-control" data-error="Please choose at least one test." data-minlength="3"
+							 placeholder="Tests" name="testcases" id="testcases" />
+							<div class="help-block with-errors"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="options">Options</label>
+							<select id="slicingopt" name="slicingopt" class="form-control">
+							  <option value="1">Definer</option>
+							  <option value="2">CSlicer</option>
+							  <option value="3">Combined</option>
+						</select>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-default" type="submit">Submit</button>
+						</div>
+					</form>
 				</div>
-				<div class="form-group">
-					<label for="endcommit">End commit:</label>
-					<input type="text" class="form-control" placeholder="End" name="endcommit" id="endcommit" />
-				</div>
-				<div class="form-group">
-					<label for="testcases">Test cases:</label>
-					<input type="text" class="form-control" placeholder="Test" name="testcases" id="testcases" />
-				</div>
-				<button class="btn btn-default" type="button" onClick="goTo()">Submit</button>
-			</form>
+			</div>
 		</div>
 	</div>
 
@@ -109,7 +135,7 @@
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
-			console.log(xhr.responseText);
+			// console.log(xhr.responseText);
 			drawTree(JSON.parse(xhr.responseText));
 		}
 	}
@@ -125,6 +151,7 @@
 			}
 		});
 	}
+
 </script>
 <script>
 	$(function () {
@@ -139,6 +166,7 @@
 			$('#jstree').jstree(true).open_node(data.selected);
 		});
 	});
+
 </script>
 <script>
 	var element = document.getElementById('drawhere');
@@ -203,23 +231,26 @@
 		{{#releaseTagPattern }}releaseTagPattern: /{{& releaseTagPattern}}/, {{/releaseTagPattern}}
 		{{#commitUrlTemplate }}createCommitUrl: commitUrl, {{/commitUrlTemplate}}
 						});
+
 </script>
 <script>
 	function goTo() {
-		$.ajax({
-			url: "http://localhost/cgi-bin/modify-pom.py",
-			type: "post",
-			datatype: "html",
-			data: { endcommit: document.getElementById("endcommit").value, 
-					startcommit: document.getElementById("startcommit").value, 
-					testcases: document.getElementById("testcases").value },
-			success: function (response) {
-				GitFlowVisualize.drawing.annotateResults(response);
-				console.log("There is a response");
-				console.log(response);
-			}
-		});
-	}
+			$.ajax({
+				url: "/scripts/modify-pom.py",
+				type: "POST",
+				datatype: "json",
+				data: {
+					endcommit: document.getElementById("endcommit").value,
+					startcommit: document.getElementById("startcommit").value,
+					testcases: document.getElementById("testcases").value
+				},
+				success: function (response) {
+					GitFlowVisualize.drawing.annotateResults(response);
+					console.log(response);
+				}
+			});
+		}
 </script>
+
 
 </html>
