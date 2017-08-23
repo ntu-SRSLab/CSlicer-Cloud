@@ -20,6 +20,7 @@ var express = require('express')
 var mustacheExpress = require('mustache-express');
 var passport = require('passport');
 var session = require('express-session');
+var bodyParser = require('body-parser');
 
 var GitHubApi = require("github");
 var github = new GitHubApi({
@@ -49,11 +50,9 @@ app.set('views', __dirname + '/views');
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
-
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
 });
-
 passport.use(new GitHubStrategy({
     clientID: configAuth.githubAuth.clientID,
     clientSecret: configAuth.githubAuth.clientSecret,
@@ -109,6 +108,7 @@ router.get('/chart/', function(req, res){
     data.moreDataUrl = config.baseURL + "/commits/from/";
     data.testDataUrl = config.baseURL + "/tests/";
     data.branchDataUrl = config.baseURL + "/branches/";
+    data.resultDataUrl = config.baseURL + "/results/";
     res.render('chart.html', data);
 });
 router.get('/clone/', function(req, res){
@@ -116,16 +116,32 @@ router.get('/clone/', function(req, res){
 	.then((result)=>{
 	    console.log("Rendering charts...");
 	    options.repo = result.path();
+	    config.toolConfig.repo_path = require("path").dirname(options.repo);
 	    res.redirect(config.baseURL + '/chart');
 	});
 });
 router.get('/tests/', function(req, res){
-    maven.extractTests(require("path").dirname(options.repo))
+    maven.extractTests(config.toolConfig.repo_path)
         .then((result)=>{
 	        res.type('json');
 	        res.write(result);
 	        res.end();
         });
+});
+var jsonParser = bodyParser.json();
+router.post('/results/', jsonParser, function(req, res){
+    config.toolConfig.start = req.body.startcommit;
+    config.toolConfig.end = req.body.endcommit;
+    config.toolConfig.tests = req.body.testcases;
+    config.toolConfig.engine = req.body.slicingopt;
+    
+    console.log(config.toolConfig);
+    maven.computeResults(config.toolConfig)
+	.then((result)=>{
+	    res.type('json');
+	    res.write(result);
+	    res.end();
+	});
 });
 router.get('/commits/', function(req, res){
     commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})

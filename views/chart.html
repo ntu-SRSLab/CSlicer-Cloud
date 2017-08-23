@@ -80,7 +80,7 @@
 			</div>
 			<div id="parameters" class="panel-collapse collapse">
 				<div class="panel-body">
-					<form data-toggle="validator" role="form" onSubmit="goTo();return false;">
+					<form id="tool-configs" data-toggle="validator" role="form" onSubmit="goTo();return false;">
 						<div class="form-group">
 							<label class="control-label" for="startcommit">Start commit</label>
 							<input type="text" required class="form-control" data-error="Please choose a start commit." data-minlength="6" placeholder="Start"
@@ -102,9 +102,9 @@
 						<div class="form-group">
 							<label class="control-label" for="options">Options</label>
 							<select id="slicingopt" name="slicingopt" class="form-control">
-							  <option value="1">Definer</option>
-							  <option value="2">CSlicer</option>
-							  <option value="3">Combined</option>
+							  <option value="definer">Definer</option>
+							  <option value="cslicer">CSlicer</option>
+							  <option value="combined">Combined</option>
 						</select>
 						</div>
 						<div class="form-group">
@@ -233,23 +233,23 @@
 
 </script>
 <script>
-	function goTo() {
-			$.ajax({
-				url: "scripts/modify-pom.py",
-				type: "POST",
-				datatype: "json",
-				data: {
-					endcommit: document.getElementById("endcommit").value,
-					startcommit: document.getElementById("startcommit").value,
-					testcases: document.getElementById("testcases").value
-				},
-				success: function (response) {
-					GitFlowVisualize.drawing.annotateResults(response);
-					console.log(response);
-				}
-			});
-		}
+  function goTo() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+              GitFlowVisualize.drawing.annotateResults(xhr.responseText);
+          }
+      }
+      xhr.open("POST", "{{& resultDataUrl}}");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      var formData = {};
+      formData['startcommit'] = document.getElementById('startcommit').value;
+      formData['endcommit'] = document.getElementById('endcommit').value;
+      formData['testcases'] = document.getElementById('testcases').value;
+      formData['slicingopt'] = document.getElementById('slicingopt').value;
+  
+      xhr.send(JSON.stringify(formData));
+  }
 </script>
-
 
 </html>
