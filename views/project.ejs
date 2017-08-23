@@ -19,7 +19,7 @@
     <ul class="list-group text-center">
       <%
 	repos.forEach(function(repo) { %>
-      <a href="/clone?owner=<%= username %>&repo=<%= repo.name %>" class="list-group-item">
+      <a href="<%= baseURL %>/clone?owner=<%= username %>&repo=<%= repo.name %>" class="list-group-item">
 	<i class="fa fa-code-fork" aria-hidden="true"></i>
 	<%= repo.name %> - <%= repo.url %></a>
       <% });

@@ -29,16 +29,17 @@ var github = new GitHubApi({
 const commits = require('./commits');
 const maven = require('./maven');
 
+var config = require('./config/config.js');
 var GitHubStrategy = require('passport-github2').Strategy;
 // load the auth variables
 var configAuth = require('./config/auth.js');
-
-const options = require('./config/config.js')([
+const options = require('./config/gfv.js')([
     { name: 'username', alias: 'u', type: String},
     { name: 'password', alias: 'p', type: String},
 ]);
 
-var app = express()
+var app = express();
+var router = express.Router();
 app.engine('html', mustacheExpress());
 
 app.set('view engine', 'mustache');
@@ -68,50 +69,57 @@ passport.use(new GitHubStrategy({
     });
 }));
 
-app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(express.static(__dirname + '/public'));
-app.use('/gfv', express.static('node_modules/git-flow-vis/dist'));
-
-app.get('/', function(req, res){
-    res.render('index.ejs');
+router.use(function(req, res, next) {
+    console.log('%s %s %s', req.method, req.url, req.path);
+    next();
 });
-
-app.get('/auth/github', passport.authenticate('github', {
+router.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+router.use(passport.initialize());
+router.use(passport.session()); // persistent login sessions
+router.use(express.static(__dirname + '/public'));
+router.use('/gfv', express.static('node_modules/git-flow-vis/dist'));
+router.get('/', function(req, res){
+    res.render('index.ejs', {
+	baseURL: config.baseURL
+    });
+});
+router.get('/auth/github', passport.authenticate('github', {
     scope : ["user:email"] }), function(req, res){
     });
-
-app.get('/auth/github/callback', passport.authenticate('github', {
-    successRedirect : '/project',
-    failureRedirect : '/'
+router.get('/auth/github/callback', passport.authenticate('github', {
+    successRedirect : config.baseURL + '/project',
+    failureRedirect : config.baseURL + '/'
 }));
-app.get('/project', function(req, res){
+router.get('/project', function(req, res){
     github.repos.getAll({
 	    visibility: 'public'
     }, function(err, result) {
 	    res.render('project.ejs', {
 	        username: req.user.username,
 	        profile: req.user.profileUrl,
-	        repos: result.data
+	        repos: result.data,
+		baseURL: config.baseURL
 	    });
     });
 });
-app.get('/chart/', function(req, res){
+router.get('/chart/', function(req, res){
     var data = options;
     data.moreDataCallback = true;
-    data.mainDataUrl = "/commits/";
+    data.mainDataUrl = config.baseURL + "/commits/";
+    data.moreDataUrl = config.baseURL + "/commits/from/";
+    data.testDataUrl = config.baseURL + "/tests/";
+    data.branchDataUrl = config.baseURL + "/branches/";
     res.render('chart.html', data);
 });
-app.get('/clone/', function(req, res){
+router.get('/clone/', function(req, res){
     commits.cloneRepo(req.query['owner'], req.query['repo'])
 	.then((result)=>{
 	    console.log("Rendering charts...");
 	    options.repo = result.path();
-	    res.redirect('/chart');
+	    res.redirect(config.baseURL + '/chart');
 	});
 });
-app.get('/tests/', function(req, res){
+router.get('/tests/', function(req, res){
     maven.extractTests(require("path").dirname(options.repo))
         .then((result)=>{
 	        res.type('json');
@@ -119,7 +127,7 @@ app.get('/tests/', function(req, res){
 	        res.end();
         });
 });
-app.get('/commits/', function(req, res){
+router.get('/commits/', function(req, res){
     commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
         .then((result)=>{
             res.type('json');
@@ -127,7 +135,7 @@ app.get('/commits/', function(req, res){
             res.end();
         });
 });
-app.get('/branches/', function(req, res){
+router.get('/branches/', function(req, res){
     commits.getBranchTips({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
         .then((branches)=>{
             var result = {values:branches};
@@ -136,7 +144,7 @@ app.get('/branches/', function(req, res){
             res.end();
         });
 });
-app.get('/commits/from/:commit', function (req, res) {
+router.get('/commits/from/:commit', function (req, res) {
     var params = req.params;
     var root = params.commit;
     commits.getAncestorsFor({path: options.repo, username: options.username, password: options.password}, root)
@@ -147,8 +155,10 @@ app.get('/commits/from/:commit', function (req, res) {
         });
 });
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000');
+app.use('', router);
+
+app.listen(config.port, function () {
+  console.log('Listening on port ' + config.port);
   if(!options.username && options.remotes){
       console.log("No username provided, so we will not be able to automtically fetch new data from remotes.");
   }

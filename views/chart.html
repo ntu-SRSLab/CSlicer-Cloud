@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="gfv/gitflow-visualize.css" />
-	<link rel="stylesheet" type="text/css" href="/assets/themes/proton/style.min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/themes/proton/style.min.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -12,7 +12,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 	<script src="gfv/gitflow-visualize.bundle.js"></script>
 	<script src="https://d3js.org/d3.v4.js"></script>
-	<script src="/assets/jstree.min.js"></script>
+	<script src="assets/jstree.min.js"></script>
 
 	<style>
 		.aui-avatar-xsmall .aui-avatar-inner img {
@@ -135,11 +135,10 @@
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
-			// console.log(xhr.responseText);
 			drawTree(JSON.parse(xhr.responseText));
 		}
 	}
-	xhr.open("GET", "/tests/");
+	xhr.open("GET", "{{& testDataUrl}}");
 	xhr.send(null);
 
 	function drawTree(data) {
@@ -188,7 +187,7 @@
 				GitFlowVisualize.branches.setChanged(JSON.parse(xhr.responseText));
 			}
 		}
-		xhr.open("GET", "/branches/");
+		xhr.open("GET", "{{& branchDataUrl}}");
 		xhr.send(null);
 	}
 	var moreDataCallback = function (from, done) {
@@ -198,7 +197,7 @@
 				done(JSON.parse(xhr.responseText), from);
 			}
 		}
-		xhr.open("GET", "/commits/from/" + from);
+		xhr.open("GET", "{{& moreDataUrl}}" + from);
 		xhr.send(null);
 	};
 	var commitUrl = function (commit) {
@@ -236,7 +235,7 @@
 <script>
 	function goTo() {
 			$.ajax({
-				url: "/scripts/modify-pom.py",
+				url: "scripts/modify-pom.py",
 				type: "POST",
 				datatype: "json",
 				data: {
