@@ -93,12 +93,13 @@ router.get('/project', function(req, res){
     github.repos.getAll({
 	    visibility: 'public'
     }, function(err, result) {
-	    res.render('project.ejs', {
-	        username: req.user.username,
-	        profile: req.user.profileUrl,
-	        repos: result.data,
-		baseURL: config.baseURL
-	    });
+	// console.log(result.data);
+	res.render('project.ejs', {
+	    username: req.user.username,
+	    profile: req.user.profileUrl,
+	    repos: result.data,
+	    baseURL: config.baseURL
+	});
     });
 });
 router.get('/chart/', function(req, res){
