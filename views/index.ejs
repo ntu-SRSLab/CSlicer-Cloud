@@ -4,62 +4,95 @@
 
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>login</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <title>CSlicer Cloud</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <!-- load fontawesome -->
     <style>
       body {
-      padding-top: 20px;
+          padding-top: 60px;
+      }
+      section {
+          padding-top: 40px;
+          margin-top: -40px;
       }
     </style>
   </head>
 
-<body>
-  <div class="container">
-    <div class="jumbotron text-center">
-      <h1>CSlicer Cloud</h1>
-      <p class="lead">A semantic history slicing service for Java projects hosted on GitHub.</p>
-      <br>
-      <p><span class="fa fa-lock"></span> Login with your GitHub account:</p>
-      <a href="<%= baseURL %>/auth/github" class="btn btn-primary btn-lg"><span class="fa fa-github"></span> Login</a>
-    </div>
-  </div>
+  <body id="page-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+	  <a class="navbar-brand" href="#page-top">CSlicer Cloud</a>
+	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#my-navbar-collapse">
+	    <span class="sr-only">Toggle navigation</span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	  </button>
+	</div>
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="my-navbar-collapse">
+	  <ul class="nav navbar-nav navbar-right">
+	    <li class="hidden"><a href="#page-top"></a></li>
+	    <li><a href="#about">About</a></li>
+	    <li><a href="#under">Under the Hood</a></li>
+	    <li><a href="#pub">Publications</a></li>
+	    <li><a href="#people">People</a></li>
+	  </ul>
+	</div>
+      </div>
+    </nav>
 
-  <div class="container">
-    <div class="page-header">
-      <h1 class="text-center text-primary">About</h1>
-    </div>
-    <div class="row">
-      <p class="lead text-center">CSlicer Cloud is a web-based framework powering a collection of <em>semantic history slicing</em> techniques.
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <h3 class="text-primary">CSlicer</h3>
-        <p><em>CSlicer</em> is a static history slicing technique based on dependency analysis. It mostly relies on static analysis
-          of dependencies between change sets and is therefore much cheaper in terms of running time. CSlicer requires only
-          a one-time effort for compilation and test execution.</p>
-        <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2015/" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h3 class="text-primary">Definer</h3>
-        <p><em>Definer</em> performs dynamic slicing through delta refinement. It executes tests multiple times and observes
-          the test results while attempting to shorten the history slices iteratively. The semantic slices found by the dynamic
-          approach are guaranteed to be minimal, but the running time is usually much longer.</p>
-        <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2016/" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h3 class="text-primary">FHistorian</h3>
-        <p><em>FHistorian</em> identifies feature and feature relationships in version histories with the precence of feature
-          tests. It builds feature relationship graph which is very useful for understanding dependencies and connections
-          between features from an evolutionary view point.</p>
-        <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-splc-2017/" role="button">View details &raquo;</a></p>
+    <div class="container">
+      <div class="jumbotron text-center">
+	<h1>CSlicer Cloud</h1>
+	<p class="lead">A semantic history slicing service for Java projects hosted on GitHub.</p>
+	<br>
+	<p><span class="fa fa-lock"></span> Login with your GitHub account:</p>
+	<a href="<%= baseURL %>/auth/github" class="btn btn-primary btn-lg"><span class="fa fa-github"></span> Login</a>
       </div>
     </div>
-  </div>
 
-  <div class="container">
+    <section id="about">
+      <div class="container">
+	<div class="page-header">
+	  <h1 class="text-center text-primary">About</h1>
+	</div>
+	<div class="row">
+	  <p class="lead text-center">CSlicer Cloud is a web-based framework powering a collection of <em>semantic history slicing</em> techniques.
+	</div>
+	<div class="row">
+	  <div class="col-md-4">
+            <h3 class="text-primary">CSlicer</h3>
+            <p><em>CSlicer</em> is a static history slicing technique based on dependency analysis. It mostly relies on static analysis
+              of dependencies between change sets and is therefore much cheaper in terms of running time. CSlicer requires only
+              a one-time effort for compilation and test execution.</p>
+            <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2015/" role="button">View details &raquo;</a></p>
+	  </div>
+	  <div class="col-md-4">
+            <h3 class="text-primary">Definer</h3>
+            <p><em>Definer</em> performs dynamic slicing through delta refinement. It executes tests multiple times and observes
+              the test results while attempting to shorten the history slices iteratively. The semantic slices found by the dynamic
+              approach are guaranteed to be minimal, but the running time is usually much longer.</p>
+            <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-ase-2016/" role="button">View details &raquo;</a></p>
+	  </div>
+	  <div class="col-md-4">
+            <h3 class="text-primary">FHistorian</h3>
+            <p><em>FHistorian</em> identifies feature and feature relationships in version histories with the precence of feature
+              tests. It builds feature relationship graph which is very useful for understanding dependencies and connections
+              between features from an evolutionary view point.</p>
+            <p><a class="btn btn-default" href="http://www.cs.toronto.edu/~liyi/host/posts/paper-accepted-by-splc-2017/" role="button">View details &raquo;</a></p>
+	  </div>
+	</div>
+      </div>
+    </section>
+
+  <section id="under">
+    <div class="container">
     <div class="page-header">
       <h1 class="text-center text-primary">Under the Hood</h1>
     </div>
@@ -88,9 +121,10 @@
       </div>
     </div>
   </div>
+  </section>
 
+  <section id="pub">
   <div class="container">
-    <div class="section">
       <div class="page-header">
         <h1 class="text-center text-primary">Publications</h1>
       </div>
@@ -120,12 +154,43 @@
 		This paper won an ACM Distinguished Paper Award.</i></p>
         </ul>
       </div>
-    </div>
   </div>
+  </section>
 
+  <section id="people">
+    <div class="container">
+      <div class="page-header">
+	<h1 class="text-center text-primary">People</h1>
+      </div>
+      <div class="row">
+	<div class="col-sm-3">
+	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/yi.jpg" height="150" width="150">
+	  <div class="caption text-center"><a href="http://www.cs.toronto.edu/~liyi/host/index.html">Yi Li</a></div>
+	</div>
+	<div class="col-sm-3">
+	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/chenguang.jpg" height="150" width="150">
+	  <div class="caption text-center"><a href="http://www.cs.utoronto.ca/~polaris/">Chenguang Zhu</a></div>
+	</div>
+	<div class="col-sm-3">
+	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/julia.jpg" height="150" width="150">
+	  <div class="caption text-center"><a href="http://www.ece.ubc.ca/~mjulia/">Julia Rubin</a></div>
+	</div>
+	<div class="col-sm-3">
+	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/marsha.jpg" height="150" width="150">
+	  <div class="caption text-center"><a href="http://www.cs.toronto.edu/~chechik/">Marsha Chechik</a></div>
+	</div>
+      </div>
+    </div>
+  </section>
+  
   <hr>
+
   <footer id="footer">
     <p class="text-center">© University of Toronto 2017</p>
   </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
 </body>
 </html>
