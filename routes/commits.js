@@ -8,14 +8,14 @@ function cloneRepo(owner, repo){
     var promise;
     var url = "https://github.com/" + owner + "/" + repo;
     var rpath = tmp.tmpNameSync();
-    if(repo in _cachedRepos){
+    if(url in _cachedRepos){
 	console.log("Fetching cached repo " + url);
-	promise = new Promise((res)=>{res( _cachedRepos[repo]);});
+	promise = new Promise((res)=>{res( _cachedRepos[url]);});
     }else{
 	console.log("Cloning " + url + " into " + rpath);
 	promise = git.Clone(url, rpath)
 	    .then(r=>{
-		_cachedRepos[repo] = r;
+		_cachedRepos[url] = r;
 		return r;
 	    });
     }

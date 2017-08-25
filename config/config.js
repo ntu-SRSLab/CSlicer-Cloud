@@ -2,10 +2,6 @@ var config = {};
 
 config.baseURL = '/~liyi/cslicer';
 config.port = 40524;
-config.toolConfig = {
-    engine: 'definer'
-};
-
 config.mysql = {
     username: 'root',
     password: 'cslicer-cloud-admin',

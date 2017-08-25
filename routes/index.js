@@ -14,10 +14,16 @@ var github = new GitHubApi({
     debug: false
 });
 
+var repo_path = {};
+function repo_name (owner, repo) {
+    return owner + "/" + repo;
+}
+
 const options = require('../config/gfv.js')([
     { name: 'username', alias: 'u', type: String},
     { name: 'password', alias: 'p', type: String},
 ]);
+
 const commits = require('./commits');
 const maven = require('./maven');
 
@@ -36,10 +42,10 @@ passport.use(new GitHubStrategy({
 }, function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-	github.authenticate({
-	    type: "oauth",
-	    token: accessToken
-	});
+	// github.authenticate({
+	//    type: "oauth",
+	//   OA token: accessToken
+	// });
 	return done(null, profile);
     });
 }));
@@ -62,39 +68,50 @@ router.get('/auth/github/callback', passport.authenticate('github', {
     failureRedirect : config.baseURL + '/'
 }));
 router.get('/project', function(req, res){
-    github.repos.getAll({
-	    visibility: 'public'
-    }, function(err, result) {
-	// console.log(result.data);
-	res.render('project.ejs', {
-	    username: req.user.username,
-	    profile: req.user.profileUrl,
-	    repos: result.data,
-	    baseURL: config.baseURL
+    if (req.user.authenticated) {
+	github.repos.getForUser({
+	    username: req.user.username
+	}, function(err, result) {
+	    // console.log(result.data);
+	    res.render('project.ejs', {
+		username: req.user.username,
+		profile: req.user.profileUrl,
+		repos: result.data,
+		baseURL: config.baseURL
+	    });
 	});
-    });
+    } else {
+	console.log("session expired, redicrect to home page.");
+	res.redirect('/');
+    }
 });
-router.get('/chart/', function(req, res){
-    var data = options;
-    data.moreDataCallback = true;
-    data.mainDataUrl = config.baseURL + "/commits/";
-    data.moreDataUrl = config.baseURL + "/commits/from/";
-    data.testDataUrl = config.baseURL + "/tests/";
-    data.branchDataUrl = config.baseURL + "/branches/";
-    data.resultDataUrl = config.baseURL + "/results/";
-    res.render('chart.html', data);
-});
-router.get('/clone/', function(req, res){
-    commits.cloneRepo(req.query['owner'], req.query['repo'])
+router.get('/:owner/:repo/chart/', function(req, res){
+    var owner = req.params['owner'];
+    var repo = req.params['repo'];
+    var prefix = config.baseURL + "/" + repo_name(owner, repo);
+    
+    // clone
+    commits.cloneRepo(owner, repo)
 	.then((result)=>{
-	    console.log("Rendering charts...");
-	    options.repo = result.path();
-	    config.toolConfig.repo_path = require("path").dirname(options.repo);
-	    res.redirect(config.baseURL + '/chart');
+	    repo_path[repo_name(owner, repo)] =
+		require("path").dirname(result.path());
+	    console.log("Redirecting to the chart page ...");
+	    // render
+	    var data = options;
+	    data.moreDataCallback = true;
+	    data.baseUrl = config.baseURL;
+	    data.mainDataUrl = prefix + "/commits/";
+	    data.moreDataUrl = prefix + "/commits/from/";
+	    data.testDataUrl = prefix + "/tests/";
+	    data.branchDataUrl = prefix + "/branches/";
+	    data.resultDataUrl = prefix + "/results/";
+	    res.render('chart.html', data);
 	});
 });
-router.get('/tests/', function(req, res){
-    maven.extractTests(config.toolConfig.repo_path)
+router.get('/:owner/:repo/tests/', function(req, res){
+    var owner = req.params['owner'];
+    var repo = req.params['repo'];
+    maven.extractTests(repo_path[repo_name(owner, repo)])
         .then((result)=>{
 	        res.type('json');
 	        res.write(result);
@@ -102,22 +119,25 @@ router.get('/tests/', function(req, res){
         });
 });
 var jsonParser = bodyParser.json();
-router.post('/results/', jsonParser, function(req, res){
-    config.toolConfig.start = req.body.startcommit;
-    config.toolConfig.end = req.body.endcommit;
-    config.toolConfig.tests = req.body.testcases;
-    config.toolConfig.engine = req.body.slicingopt;
+router.post('/:owner/:repo/results/', jsonParser, function(req, res){
+    var toolConfig = {};
+    var owner = req.params['owner'];
+    var repo = req.params['repo'];
+    toolConfig.repo_path = repo_path[repo_name(owner, repo)];
+    toolConfig.start = req.body.startcommit;
+    toolConfig.end = req.body.endcommit;
+    toolConfig.tests = req.body.testcases;
+    toolConfig.engine = req.body.slicingopt;
     
-    maven.computeResults(config.toolConfig)
+    maven.computeResults(toolConfig)
 	.then((r)=>{
-	    // console.log(config.toolConfig);
 	    // write to database
 	    models.Run.create({
-		start: config.toolConfig.start,
-		end: config.toolConfig.end,
-		tests: config.toolConfig.tests,
-		engine: config.toolConfig.engine,
-		repo_path: config.toolConfig.repo_path,
+		start: toolConfig.start,
+		end: toolConfig.end,
+		tests: toolConfig.tests,
+		engine: toolConfig.engine,
+		repo_path: toolConfig.repo_path,
 		result: r
 	    })
 		.then((anotherRun) => {
@@ -134,16 +154,26 @@ router.post('/results/', jsonParser, function(req, res){
 	    res.end();
 	});
 });
-router.get('/commits/', function(req, res){
-    commits.getBaseCommitData({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
+router.get('/:owner/:repo/commits/', function(req, res){
+    var owner = req.params['owner'];
+    var repo = req.params['repo'];
+    commits.getBaseCommitData({
+	path: repo_path[repo_name(owner,repo)],
+	username: options.username,
+	password: options.password}, {remotes:options.remotes})
         .then((result)=>{
             res.type('json');
             res.write(JSON.stringify(result));
             res.end();
         });
 });
-router.get('/branches/', function(req, res){
-    commits.getBranchTips({path: options.repo, username: options.username, password: options.password}, {remotes:options.remotes})
+router.get('/:owner/:repo/branches/', function(req, res){
+    var owner = req.params['owner'];
+    var repo = req.params['repo'];
+    commits.getBranchTips({
+	path: repo_path[repo_name(owner, repo)],
+	username: options.username,
+	password: options.password}, {remotes:options.remotes})
         .then((branches)=>{
             var result = {values:branches};
             res.type('json');
@@ -151,10 +181,15 @@ router.get('/branches/', function(req, res){
             res.end();
         });
 });
-router.get('/commits/from/:commit', function (req, res) {
+router.get('/:owner/:repo/commits/from/:commit', function (req, res) {
     var params = req.params;
     var root = params.commit;
-    commits.getAncestorsFor({path: options.repo, username: options.username, password: options.password}, root)
+    var owner = params.owner;
+    var repo = params.repo;
+    commits.getAncestorsFor({
+	path: repo_path[repo_name(owner, repo)],
+	username: options.username,
+	password: options.password}, root)
         .then((result)=>{
             res.type('json');
             res.write(JSON.stringify({values:result}));

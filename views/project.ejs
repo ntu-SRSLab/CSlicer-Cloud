@@ -20,7 +20,7 @@
 <div class="list-group">
   <%
      repos.forEach(function(repo) { %>
-  <a href="<%= baseURL %>/clone?owner=<%= username %>&repo=<%= repo.name %>" class="list-group-item">
+  <a href="<%= baseURL %>/<%= username %>/<%= repo.name %>/chart" class="list-group-item">
     <h4 class="list-group-item-heading">
       <i class="fa fa-code-fork" aria-hidden="true"></i> <%= repo.full_name %>
       <span class="badge pull-right"><%= repo.language %></span>
