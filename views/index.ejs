@@ -11,11 +11,11 @@
     <!-- load fontawesome -->
     <style>
       body {
-          padding-top: 60px;
+      padding-top: 60px;
       }
       section {
-          padding-top: 40px;
-          margin-top: -40px;
+      padding-top: 40px;
+      margin-top: -40px;
       }
     </style>
   </head>
@@ -91,106 +91,107 @@
       </div>
     </section>
 
-  <section id="under">
-    <div class="container">
-    <div class="page-header">
-      <h1 class="text-center text-primary">Under the Hood</h1>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="thumbnail">
-          <img src="<%= baseURL %>/images/static-slice.jpeg" alt="static" style="width:80%">
-          <div class="caption">
-            <p>Static history slicing first runs the target tests and computes a <em>functional set</em> and a <em>compilation set</em>              which correspond to the atomic changes necessary for preserving the semantics and the well-formedness of the
-              target functionality. Then it goes through each commit to decide if it is relevant or not, based on precomputed
-              dependencies.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="thumbnail">
-          <img src="<%= baseURL %>/images/dynamic-slice.jpeg" alt="dynamic" style="width:89%">
-          <div class="caption">
-            <p>Dynamic history slicing partitions the input history by dropping some commits and opportunistically reduces the
-              search space when the target tests pass on one of the partitions, until a minimal partition is reached. It
-              also uses observed test pass/fail signals and dynamic program invariants to predict the significance of changes
-              with respect to the target tests.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </section>
-
-  <section id="pub">
-  <div class="container">
-      <div class="page-header">
-        <h1 class="text-center text-primary">Publications</h1>
-      </div>
-      <div class="row">
-        <ul>
-          <li>
-            <h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
-            <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
-              <i>Transactions on Software Engineering, IEEE, accepted.</i></p>
-          </li>
-          <li>
-            <h4 class="text-primary"><b>FHistorian: Locating Features in Version Histories</b></h4>
-            <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
-              <i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
-          <li>
-            <h4 class="text-primary"><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></h4>
-            <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
-              <i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
-          <li>
-            <h4 class="text-primary"><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></h4>
-            <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
-              <i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
-          <li>
-            <h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
-            <p>Yi Li, Julia Rubin and Marsha Chechik.
-              <i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
-		This paper won an ACM Distinguished Paper Award.</i></p>
-        </ul>
-      </div>
-  </div>
-  </section>
-
-  <section id="people">
-    <div class="container">
-      <div class="page-header">
-	<h1 class="text-center text-primary">People</h1>
-      </div>
-      <div class="row">
-	<div class="col-sm-3">
-	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/yi.jpg" height="150" width="150">
-	  <div class="caption text-center"><a href="http://www.cs.toronto.edu/~liyi/host/index.html">Yi Li</a></div>
+    <section id="under">
+      <div class="container">
+	<div class="page-header">
+	  <h1 class="text-center text-primary">Under the Hood</h1>
 	</div>
-	<div class="col-sm-3">
-	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/chenguang.jpg" height="150" width="150">
-	  <div class="caption text-center"><a href="http://www.cs.utoronto.ca/~polaris/">Chenguang Zhu</a></div>
-	</div>
-	<div class="col-sm-3">
-	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/julia.jpg" height="150" width="150">
-	  <div class="caption text-center"><a href="http://www.ece.ubc.ca/~mjulia/">Julia Rubin</a></div>
-	</div>
-	<div class="col-sm-3">
-	  <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/marsha.jpg" height="150" width="150">
-	  <div class="caption text-center"><a href="http://www.cs.toronto.edu/~chechik/">Marsha Chechik</a></div>
+	<div class="row">
+	  <div class="col-sm-6">
+            <div class="thumbnail">
+              <img src="<%= baseURL %>/images/static-slice.jpeg" alt="static" style="width:80%">
+              <div class="caption">
+		<p>Static history slicing first runs the target tests and computes a <em>functional set</em> and a <em>compilation set</em>
+		  which correspond to the atomic changes necessary for preserving the semantics and the well-formedness of the
+		  target functionality. Then it goes through each commit to decide if it is relevant or not, based on precomputed
+		  dependencies.
+		</p>
+              </div>
+            </div>
+	  </div>
+	  <div class="col-sm-6">
+            <div class="thumbnail">
+              <img src="<%= baseURL %>/images/dynamic-slice.jpeg" alt="dynamic" style="width:89%">
+              <div class="caption">
+		<p>Dynamic history slicing partitions the input history by dropping some commits and opportunistically reduces the
+		  search space when the target tests pass on one of the partitions, until a minimal partition is reached. It
+		  also uses observed test pass/fail signals and dynamic program invariants to predict the significance of changes
+		  with respect to the target tests.</p>
+              </div>
+            </div>
+	  </div>
 	</div>
       </div>
-    </div>
-  </section>
-  
-  <hr>
+    </section>
 
-  <footer id="footer">
-    <p class="text-center">© University of Toronto 2017</p>
-  </footer>
+    <section id="pub">
+      <div class="container">
+	<div class="page-header">
+          <h1 class="text-center text-primary">Publications</h1>
+	</div>
+	<div class="row">
+          <ul>
+            <li>
+              <h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
+              <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+		<i>Transactions on Software Engineering, IEEE, accepted.</i></p>
+            </li>
+            <li>
+              <h4 class="text-primary"><b>FHistorian: Locating Features in Version Histories</b></h4>
+              <p>Yi Li, Chenguang Zhu, Julia Rubin and Marsha Chechik.
+		<i>In Proceedings of the 21st International Systems and Software Product Line Conference, to appear.</i></p>
+            <li>
+              <h4 class="text-primary"><b>A Dataset for Dynamic Discovery of Semantic Changes in Version Controlled Software Histories.</b></h4>
+              <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+		<i>In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017.</i></p>
+            <li>
+              <h4 class="text-primary"><b>Precise Semantic History Slicing through Dynamic Delta Refinement.</b></h4>
+              <p>Chenguang Zhu, Yi Li, Julia Rubin and Marsha Chechik.
+		<i>In Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineering, ASE 2016.</i></p>
+            <li>
+              <h4 class="text-primary"><b>Semantic Slicing of Software Version Histories</b></h4>
+              <p>Yi Li, Julia Rubin and Marsha Chechik.
+		<i>In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering, ASE 2015.
+		  This paper won an ACM Distinguished Paper Award.</i></p>
+          </ul>
+	</div>
+      </div>
+    </section>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
-</body>
+    <section id="people">
+      <div class="container">
+	<div class="page-header">
+	  <h1 class="text-center text-primary">People</h1>
+	</div>
+	<div class="row">
+	  <div class="col-sm-3">
+	    <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/yi.jpg" height="120" width="120">
+	    <div class="caption text-center"><a href="http://www.cs.toronto.edu/~liyi/host/index.html">Yi Li</a></div>
+	  </div>
+	  <div class="col-sm-3">
+	    <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/chenguang.jpg" height="120" width="120">
+	    <div class="caption text-center"><a href="http://www.cs.utoronto.ca/~polaris/">Chenguang Zhu</a></div>
+	  </div>
+	  <div class="col-sm-3">
+	    <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/julia.jpg" height="120" width="120">
+	    <div class="caption text-center"><a href="http://www.ece.ubc.ca/~mjulia/">Julia Rubin</a></div>
+	  </div>
+	  <div class="col-sm-3">
+	    <img class="img-circle center-block img-responsive" src="<%= baseURL %>/images/marsha.jpg" height="120" width="120">
+	    <div class="caption text-center"><a href="http://www.cs.toronto.edu/~chechik/">Marsha Chechik</a></div>
+	  </div>
+	</div>
+      </div>
+    </section>
+    
+    <hr>
+
+    <footer id="footer">
+      <p class="text-center">© University of Toronto 2017</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+  </body>
 </html>

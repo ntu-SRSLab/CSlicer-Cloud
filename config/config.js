@@ -6,4 +6,12 @@ config.toolConfig = {
     engine: 'definer'
 };
 
+config.mysql = {
+    username: 'root',
+    password: 'cslicer-cloud-admin',
+    database: 'cslicer-db',
+    host: '127.0.0.1',
+    port: '40525'
+};
+
 module.exports = config;

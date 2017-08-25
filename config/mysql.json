@@ -1,0 +1,26 @@
+{
+    "development": {
+	"username": "root",
+	"password": "cslicer-cloud-admin",
+	"database": "cslicer-db",
+	"host" : "127.0.0.1",
+	"port" : "40525",
+	"dialect": "mysql"
+    },
+    "test": {
+	"username": "root",
+	"password": "cslicer-cloud-admin",
+	"database": "cslicer-db",
+	"host" : "127.0.0.1",
+	"port" : "40525",
+	"dialect": "mysql"
+    },
+    "production": {
+	"username": "root",
+	"password": "cslicer-cloud-admin",
+	"database": "cslicer-db",
+	"host" : "127.0.0.1",
+	"port" : "40525",
+	"dialect": "mysql"
+    }
+}

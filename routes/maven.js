@@ -14,7 +14,7 @@ function computeResults(toolConfig) {
     } else {
 	promise = new Promise(function(fulfill, reject){
 	    console.log("Running " + toolConfig.engine + " in " + toolConfig.repo_path + " ...");
-	    fulfill(toolConfig);
+	    fulfill("results...testing");
 	});
 	_cachedResults[config_id] = promise;
     }
@@ -59,7 +59,7 @@ function extractTests(repo_path){
 								"target/maven-status/maven-compiler-plugin/testCompile/default-cli/inputFiles.lst"),
 						      repo_path, 
 						      "test_methods_distiller.jar"], 
-						     { 	cwd: path.join(__dirname, "public/scripts/"),
+						     { 	cwd: path.join(__dirname, "../public/scripts/"),
 							stdio: 'pipe'
 						     });
 			    extractTests.stderr.on('data', (data) => {
