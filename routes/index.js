@@ -68,22 +68,17 @@ router.get('/auth/github/callback', passport.authenticate('github', {
     failureRedirect : config.baseURL + '/'
 }));
 router.get('/project', function(req, res){
-    if (req.user.authenticated) {
-	github.repos.getForUser({
-	    username: req.user.username
-	}, function(err, result) {
-	    // console.log(result.data);
-	    res.render('project.ejs', {
-		username: req.user.username,
-		profile: req.user.profileUrl,
-		repos: result.data,
-		baseURL: config.baseURL
-	    });
+    github.repos.getForUser({
+	username: req.user.username
+    }, function(err, result) {
+	// console.log(result.data);
+	res.render('project.ejs', {
+	    username: req.user.username,
+	    profile: req.user.profileUrl,
+	    repos: result.data,
+	    baseURL: config.baseURL
 	});
-    } else {
-	console.log("session expired, redicrect to home page.");
-	res.redirect('/');
-    }
+    });
 });
 router.get('/:owner/:repo/chart/', function(req, res){
     var owner = req.params['owner'];
