@@ -1,6 +1,7 @@
 var config = {};
 
-config.baseURL = '/~liyi/cslicer';
+//config.baseURL = '/~liyi/cslicer';
+config.baseURL = '';
 config.port = 40524;
 config.mysql = {
     username: 'root',

@@ -4,8 +4,6 @@ var router = express.Router();
 var passport = require('passport');
 var bodyParser = require('body-parser');
 var config = require('../config/config.js');
-var configAuth = require('../config/auth.js');
-var session = require('express-session');
 
 var models = require("../models/index.js");
 
@@ -26,33 +24,6 @@ const options = require('../config/gfv.js')([
 
 const commits = require('./commits');
 const maven = require('./maven');
-
-var GitHubStrategy = require('passport-github2').Strategy;
-// required for passport
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
-passport.use(new GitHubStrategy({
-    clientID: configAuth.githubAuth.clientID,
-    clientSecret: configAuth.githubAuth.clientSecret,
-    callbackURL: configAuth.githubAuth.callbackURL,
-}, function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-	// github.authenticate({
-	//    type: "oauth",
-	//   OA token: accessToken
-	// });
-	return done(null, profile);
-    });
-}));
-
-router.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-router.use(passport.initialize());
-router.use(passport.session()); // persistent login sessions
 
 router.use('/gfv', express.static('node_modules/git-flow-vis/dist'));
 router.get('/', function(req, res){
