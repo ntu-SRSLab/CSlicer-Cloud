@@ -11,122 +11,122 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
-		.aui-avatar-xsmall .aui-avatar-inner img {
-			max-height: 12px;
-			max-width: 12px;
-		}
+      .aui-avatar-xsmall .aui-avatar-inner img {
+      max-height: 12px;
+      max-width: 12px;
+      }
+      
+      .aui-lozenge {
+      background: #cccccc;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      color: #333333;
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 99%;
+      margin: 0;
+      padding: 2px 5px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      }
+      
+      .aui-lozenge-subtle {
+      background-color: #ffffff;
+      }
+      
+      .aui-lozenge-complete {
+      border-color: #a5b3c2;
+      color: #4a6785;
+      }
+      
+      .aui-lozenge-error {
+      border-color: #e8a29b;
+      color: #d04437;
+      }
+      
+      .aui-lozenge-current {
+      border-color: #ffe9a8;
+      color: #594300;
+      }
+      
+      .aui-lozenge-success {
+      border-color: #60b070;
+      color: #14892c;
+      }
+      
+      body {
+      padding-top: 10px;
+      color: #333333;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.42857142857143;
+      }
+    </style>
+  </head>
 
-		.aui-lozenge {
-			background: #cccccc;
-			border: 1px solid #cccccc;
-			border-radius: 3px;
-			color: #333333;
-			display: inline-block;
-			font-size: 11px;
-			font-weight: bold;
-			line-height: 99%;
-			margin: 0;
-			padding: 2px 5px;
-			text-align: center;
-			text-decoration: none;
-			text-transform: uppercase;
-		}
-
-		.aui-lozenge-subtle {
-			background-color: #ffffff;
-		}
-
-		.aui-lozenge-complete {
-			border-color: #a5b3c2;
-			color: #4a6785;
-		}
-
-		.aui-lozenge-error {
-			border-color: #e8a29b;
-			color: #d04437;
-		}
-
-		.aui-lozenge-current {
-			border-color: #ffe9a8;
-			color: #594300;
-		}
-
-		.aui-lozenge-success {
-			border-color: #60b070;
-			color: #14892c;
-		}
-
-		body {
-			padding-top: 10px;
-			color: #333333;
-			font-family: Arial, sans-serif;
-			font-size: 14px;
-			line-height: 1.42857142857143;
-		}
-	</style>
-</head>
-
-<body>
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">
-					<a data-toggle="collapse" href="#parameters">Slicing Parameters</a>
-				</h4>
-			</div>
-			<div id="parameters" class="panel-collapse collapse">
-				<div class="panel-body">
-					<form id="tool-configs" data-toggle="validator" role="form" onSubmit="goTo();return false;">
-						<div class="form-group">
-							<label class="control-label" for="startcommit">Start commit</label>
-							<input type="text" required class="form-control" data-error="Please choose a start commit." data-minlength="6" placeholder="Start"
-							 name="startcommit" id="startcommit" />
-							<div class="help-block with-errors"></div>
-						</div>
-						<div class="form-group">
-							<label class="control-label" for="endcommit">End commit</label>
-							<input type="text" required class="form-control" data-error="Please choose an end commit." data-minlength="6" placeholder="End"
-							 name="endcommit" id="endcommit" />
-							<div class="help-block with-errors"></div>
-						</div>
-						<div class="form-group">
-							<label class="control-label" for="testcases">Test cases</label>
-							<input type="text" required required class="form-control" data-error="Please choose at least one test." data-minlength="3"
-							 placeholder="Tests" name="testcases" id="testcases" />
-							<div class="help-block with-errors"></div>
-						</div>
-						<div class="form-group">
-							<label class="control-label" for="options">Options</label>
-							<select id="slicingopt" name="slicingopt" class="form-control">
-							  <option value="definer">Definer</option>
-							  <option value="cslicer">CSlicer</option>
-							  <option value="combined">Combined</option>
-						</select>
-						</div>
-						<div class="form-group">
-							<button class="btn btn-default" type="submit">Submit</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+  <body>
+    <div class="container">
+      <div class="panel panel-default">
+	<div class="panel-heading">
+	  <h4 class="panel-title">
+	    <a data-toggle="collapse" href="#parameters">Slicing Parameters</a>
+	  </h4>
 	</div>
-
-	<div class="container">
-		<ul class="nav nav-tabs">
-			<li class="active"><a data-toggle="tab" href="#drawhere">History View</a></li>
-			<li><a data-toggle="tab" href="#jstree">Test View</a></li>
-			<li><a data-toggle="tab" href="#branch">Branch View</a></li>
-		</ul>
-
-		<div class="tab-content">
-			<div id="drawhere" class="tab-pane fade in active"></div>
-			<div id="jstree" class="tab-pane fade"></div>
-			<div id="branch" class="tab-pane"></div>
-		</div>
+	<div id="parameters" class="panel-collapse collapse">
+	  <div class="panel-body">
+	    <form id="tool-configs" data-toggle="validator" role="form" onSubmit="goTo();return false;">
+	      <div class="form-group">
+		<label class="control-label" for="startcommit">Start commit</label>
+		<input type="text" required class="form-control" data-error="Please choose a start commit." data-minlength="6" placeholder="Start"
+		       name="startcommit" id="startcommit" />
+		<div class="help-block with-errors"></div>
+	      </div>
+	      <div class="form-group">
+		<label class="control-label" for="endcommit">End commit</label>
+		<input type="text" required class="form-control" data-error="Please choose an end commit." data-minlength="6" placeholder="End"
+		       name="endcommit" id="endcommit" />
+		<div class="help-block with-errors"></div>
+	      </div>
+	      <div class="form-group">
+		<label class="control-label" for="testcases">Test cases</label>
+		<input type="text" required required class="form-control" data-error="Please choose at least one test." data-minlength="3"
+		       placeholder="Tests" name="testcases" id="testcases" />
+		<div class="help-block with-errors"></div>
+	      </div>
+	      <div class="form-group">
+		<label class="control-label" for="options">Options</label>
+		<select id="slicingopt" name="slicingopt" class="form-control">
+		  <option value="definer">Definer</option>
+		  <option value="cslicer">CSlicer</option>
+		  <option value="combined">Combined</option>
+		</select>
+	      </div>
+	      <div class="form-group">
+		<button class="btn btn-default" type="submit">Submit</button>
+	      </div>
+	    </form>
+	  </div>
 	</div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      </div>
+    </div>
+    
+    <div class="container">
+      <ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#drawhere">History View</a></li>
+	<li><a data-toggle="tab" href="#jstree">Test View</a></li>
+	<li><a data-toggle="tab" href="#branch">Branch View</a></li>
+      </ul>
+      
+      <div class="tab-content">
+	<div id="drawhere" class="tab-pane fade in active"></div>
+	<div id="jstree" class="tab-pane fade"></div>
+	<div id="branch" class="tab-pane"></div>
+      </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
     <script src="{{& baseUrl}}/gfv/gitflow-visualize.bundle.js"></script>

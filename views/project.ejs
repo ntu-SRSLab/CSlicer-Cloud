@@ -6,36 +6,42 @@
   <title>CSlicer Cloud</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <style>
-        body        { padding-top:10px; }
-    </style>
 </head>
+
 <body>
-  <div class="container">
-    
-    <div class="well text-center">
-        <h3>Pick a repository to get started: <a href="<%= profile %>"> <%= username %></a></h1>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+	<a class="navbar-brand" href="<%= baseURL %>">CSlicer Cloud</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+	<li><a href="<%= profile %>"><span class="glyphicon glyphicon-user"></span> <%= username %></a></li>
+      </ul>
     </div>
+  </nav>
+  
+  <div class="container">
+    <div class="list-group">
+      <%
+	 repos.forEach(function(repo) { %>
+      <a href="<%= baseURL %>/<%= username %>/<%= repo.name %>/chart" class="list-group-item">
+	<h4 class="list-group-item-heading">
+	  <i class="fa fa-code-fork" aria-hidden="true"></i> <%= repo.full_name %>
+	  <span class="badge pull-right"><%= repo.language %></span>
+	</h4>
+	<p class="list-group-item-text">
+	  <%= repo.description %>
+	</p>
+      </a>
+      <% });
+	 %>
+    </div>
+  </div>
 
-<div class="list-group">
-  <%
-     repos.forEach(function(repo) { %>
-  <a href="<%= baseURL %>/<%= username %>/<%= repo.name %>/chart" class="list-group-item">
-    <h4 class="list-group-item-heading">
-      <i class="fa fa-code-fork" aria-hidden="true"></i> <%= repo.full_name %>
-      <span class="badge pull-right"><%= repo.language %></span>
-    </h4>
-    <p class="list-group-item-text">
-      <%= repo.description %>
-    </p>
-  </a>
-  <% });
-     %>
-</div>
-
-<hr>
-<footer id="footer">
-  <p class="text-center">© University of Toronto 2017</p>
-</footer>
+  <hr>
+  <footer id="footer">
+    <p class="text-center">© University of Toronto 2017</p>
+  </footer>
 </body>
+
 </html>

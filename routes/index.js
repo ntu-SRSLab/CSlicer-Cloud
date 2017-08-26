@@ -31,14 +31,17 @@ router.get('/', function(req, res){
 	baseURL: config.baseURL
     });
 });
+
 router.get('/auth/github', passport.authenticate('github', {
     scope : ["user:email"] }), function(req, res){
     });
+
 router.get('/auth/github/callback', passport.authenticate('github', {
     successRedirect : config.baseURL + '/project',
     failureRedirect : config.baseURL + '/'
 }));
-router.get('/project', function(req, res){
+
+router.get('/project', function(req, res) {
     github.repos.getForUser({
 	username: req.user.username
     }, function(err, result) {
@@ -51,7 +54,8 @@ router.get('/project', function(req, res){
 	});
     });
 });
-router.get('/:owner/:repo/chart/', function(req, res){
+
+router.get('/:owner/:repo/chart/', function(req, res) {
     var owner = req.params['owner'];
     var repo = req.params['repo'];
     var prefix = config.baseURL + "/" + repo_name(owner, repo);
@@ -74,7 +78,8 @@ router.get('/:owner/:repo/chart/', function(req, res){
 	    res.render('chart.html', data);
 	});
 });
-router.get('/:owner/:repo/tests/', function(req, res){
+
+router.get('/:owner/:repo/tests/', function(req, res) {
     var owner = req.params['owner'];
     var repo = req.params['repo'];
     maven.extractTests(repo_path[repo_name(owner, repo)])
@@ -84,8 +89,9 @@ router.get('/:owner/:repo/tests/', function(req, res){
 	        res.end();
         });
 });
+
 var jsonParser = bodyParser.json();
-router.post('/:owner/:repo/results/', jsonParser, function(req, res){
+router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
     var toolConfig = {};
     var owner = req.params['owner'];
     var repo = req.params['repo'];
@@ -120,7 +126,8 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res){
 	    res.end();
 	});
 });
-router.get('/:owner/:repo/commits/', function(req, res){
+
+router.get('/:owner/:repo/commits/', function(req, res) {
     var owner = req.params['owner'];
     var repo = req.params['repo'];
     commits.getBaseCommitData({
@@ -133,7 +140,8 @@ router.get('/:owner/:repo/commits/', function(req, res){
             res.end();
         });
 });
-router.get('/:owner/:repo/branches/', function(req, res){
+
+router.get('/:owner/:repo/branches/', function(req, res) {
     var owner = req.params['owner'];
     var repo = req.params['repo'];
     commits.getBranchTips({
@@ -147,6 +155,7 @@ router.get('/:owner/:repo/branches/', function(req, res){
             res.end();
         });
 });
+
 router.get('/:owner/:repo/commits/from/:commit', function (req, res) {
     var params = req.params;
     var root = params.commit;
