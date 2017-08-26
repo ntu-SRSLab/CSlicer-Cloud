@@ -7,7 +7,7 @@ var _lastFetch = {};
 function cloneRepo(owner, repo){
     var promise;
     var url = "https://github.com/" + owner + "/" + repo;
-    var rpath = tmp.tmpNameSync();
+    var rpath = tmp.tmpNameSync({prefix: 'cslicer-cloud'});
     if(url in _cachedRepos){
 	console.log("Fetching cached repo " + url);
 	promise = new Promise((res)=>{res( _cachedRepos[url]);});
