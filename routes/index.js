@@ -80,6 +80,10 @@ router.get('/:owner/:repo/chart/', function(req, res) {
 	    data.branchDataUrl = prefix + "/branches/";
 	    data.resultDataUrl = prefix + "/results/";
 	    res.render('chart.html', data);
+	})
+	.catch((e)=>{
+	    console.log("Clone repo failed.");
+	    res.redirect(config.baseURL);
 	});
 });
 
@@ -115,14 +119,12 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
 		engine: toolConfig.engine,
 		repo_path: toolConfig.repo_path,
 		result: r
-	    })
-		.then((anotherRun) => {
-		    console.log("Successfully written to database.");
-		})
-		.catch(error => {
-		    console.log("Failed to write to database.");
-		    console.log(error);
-		});
+	    }).then((anotherRun) => {
+		console.log("Successfully written to database.");
+	    }).catch(error => {
+		console.log("Failed to write to database.");
+		console.log(error);
+	    });
 
 	    // write to result page
 	    res.type('json');
