@@ -42,17 +42,21 @@ router.get('/auth/github/callback', passport.authenticate('github', {
 }));
 
 router.get('/project', function(req, res) {
-    github.repos.getForUser({
-	username: req.user.username
-    }, function(err, result) {
-	// console.log(result.data);
-	res.render('project.ejs', {
-	    username: req.user.username,
-	    profile: req.user.profileUrl,
-	    repos: result.data,
-	    baseURL: config.baseURL
+    if (req.user) {
+	github.repos.getForUser({
+	    username: req.user.username
+	}, function(err, result) {
+	    res.render('project.ejs', {
+		username: req.user.username,
+		profile: req.user.profileUrl,
+		repos: result.data,
+		baseURL: config.baseURL
+	    });
 	});
-    });
+    } else {
+	console.log("session invalid, redirect to login");
+	res.redirect(config.baseURL + "/");
+    }
 });
 
 router.get('/:owner/:repo/chart/', function(req, res) {
