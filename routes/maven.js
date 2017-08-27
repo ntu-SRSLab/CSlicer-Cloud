@@ -14,7 +14,7 @@ function computeResults(toolConfig) {
     } else {
 	promise = new Promise(function(fulfill, reject){
 	    console.log("Running " + toolConfig.engine + " in " + toolConfig.repo_path + " ...");
-	    fulfill("results...testing");
+	    fulfill('{"simple": ["3637948", "86e6c65"], "full": [["3637948"], ["86e6c65"]]}');
 	});
 	_cachedResults[config_id] = promise;
     }

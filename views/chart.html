@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>CSlicer Cloud</title>
-    <link rel="stylesheet" type="text/css" href="{{& baseUrl}}/gfv/gitflow-visualize.css" />
-    <link rel="stylesheet" type="text/css" href="{{& baseUrl}}/assets/themes/proton/style.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{& baseUrl}}/gfv/gitflow-visualize.css">
+    <link rel="stylesheet" type="text/css" href="{{& baseUrl}}/assets/themes/proton/style.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
     <style>
       .aui-avatar-xsmall .aui-avatar-inner img {
       max-height: 12px;
@@ -119,13 +120,18 @@
       <ul class="nav nav-tabs">
 	<li class="active"><a data-toggle="tab" href="#drawhere">History View</a></li>
 	<li><a data-toggle="tab" href="#jstree">Test View</a></li>
-	<li><a data-toggle="tab" href="#branch">Branch View</a></li>
+	<li><a data-toggle="tab" href="#slice">Result View</a></li>
       </ul>
       
       <div class="tab-content">
 	<div id="drawhere" class="tab-pane fade in active"></div>
 	<div id="jstree" class="tab-pane fade"></div>
-	<div id="branch" class="tab-pane"></div>
+	<div id="slice" class="tab-pane">
+	  <div class="panel panel-default">
+	    <div class="panel-heading">Slicing Results</div>
+	    <table id="results" class="display" width="100%"></table>
+	  </div>
+	</div>
       </div>
     </div>
     
@@ -135,7 +141,8 @@
     <script src="{{& baseUrl}}/gfv/gitflow-visualize.bundle.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="{{& baseUrl}}/assets/jstree.min.js"></script>
-
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    
     <script>
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
@@ -242,7 +249,16 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
-              GitFlowVisualize.drawing.annotateResults(xhr.responseText);
+              var response = JSON.parse(xhr.responseText);
+              GitFlowVisualize.drawing.annotateResults(response.simple);
+
+              console.log(response);
+              $('#results').DataTable({
+                  data: response.full,
+                  columns: [
+                      {title: "Commits"}
+                  ] 
+              });
           }
       }
       xhr.open("POST", "{{& resultDataUrl}}");
