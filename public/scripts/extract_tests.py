@@ -32,6 +32,8 @@ def extractTestClasses (input_files_list_path, project_path, jar_path):
     for f in lst:
         f = f.strip()
         filename = os.path.basename(f)
+        classname = os.path.splitext(filename)[0]
+        
         if filename.startswith('Test') or filename.endswith('Test.java'):
             if not filename.startswith('Abstract'):
                 test_dict = {}
@@ -52,7 +54,9 @@ def extractTestClasses (input_files_list_path, project_path, jar_path):
                 
                 test_dict['id'] = f
                 test_dict['text'] = os.path.basename(f)
-                test_dict['children'] = test_methods_list
+                test_dict['children'] = [{'id' : classname + "#" + methodname,
+                                          'text' : methodname}
+                                         for methodname in test_methods_list]
                 test_tree.append(test_dict)
     #test_tree = delRepeat(test_tree)
     json_str = json.dumps(test_tree)

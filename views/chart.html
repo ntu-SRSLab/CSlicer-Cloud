@@ -171,8 +171,8 @@
 		$('#jstree').on("changed.jstree", function (e, data) {
 			var i, j, r = [];
 			for (i = 0, j = data.selected.length; i < j; i++) {
-				if (data.selected[i].indexOf(".java") == -1) {
-					r.push(data.instance.get_node(data.selected[i]).text);
+				if (data.instance.is_leaf(data.selected[i])) {
+					r.push(data.instance.get_node(data.selected[i]).id);
 				}
 			}
 			document.getElementById('testcases').value = r.join(', ');
