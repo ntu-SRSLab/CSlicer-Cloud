@@ -14,7 +14,31 @@ function computeResults(toolConfig) {
     } else {
 	promise = new Promise(function(fulfill, reject){
 	    console.log("Running " + toolConfig.engine + " in " + toolConfig.repo_path + " ...");
-	    fulfill('{"simple": ["3637948", "86e6c65"], "full": [["3637948"], ["86e6c65"]]}');
+	    var cslicerRun = spawn('python', ["run_cslicer.py",
+					      toolConfig.repo_path,
+					      toolConfig.start,
+					      toolConfig.end,
+					      toolConfig.tests,
+					      toolConfig.engine], {
+		cwd: path.join(__dirname, "../public/scripts/"),
+		stdio: 'pipe'
+	    });
+	    cslicerRun.stderr.on('data', (data) => {
+		reject(data);
+	    });
+	    var result = '';
+	    cslicerRun.stdout.on('data', (data) => {
+		result += data.toString();
+	    });
+	    cslicerRun.on('close', (code) => {
+		if (code !== 0) {
+		    console.log("CSlicer run failed");
+		    return;
+		}
+		console.log(result);
+		fulfill(result);
+	    });
+	    // fulfill('{"simple": ["3637948", "86e6c65"], "full": [["3637948"], ["86e6c65"]]}');
 	});
 	_cachedResults[config_id] = promise;
     }
@@ -59,8 +83,9 @@ function extractTests(repo_path){
 							"target/maven-status/maven-compiler-plugin/testCompile/default-cli/inputFiles.lst"),
 					      repo_path, 
 					      "test_methods_distiller.jar"], 
-					     { 	cwd: path.join(__dirname, "../public/scripts/"),
-						stdio: 'pipe'
+					     {
+ 						 cwd: path.join(__dirname, "../public/scripts/"),
+						 stdio: 'pipe'
 					     });
 		    extractTests.stderr.on('data', (data) => {
 			reject(data.toString());
@@ -68,14 +93,14 @@ function extractTests(repo_path){
 		    var result = '';
 		    extractTests.stdout.on('data', (data) => {
 			result += data.toString();
-		    })
+		    });
 		    extractTests.on('close', (code) => {
 			if (code !== 0) {
 			    console.log("extract test cases failed");
 			    return;
 			}
 			fulfill(result);
-		    })
+		    });
 		});
 	    });
 	});

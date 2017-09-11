@@ -118,7 +118,7 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
 		tests: toolConfig.tests,
 		engine: toolConfig.engine,
 		repo_path: toolConfig.repo_path,
-		result: r
+		result: "dummy results"
 	    }).then((anotherRun) => {
 		console.log("Successfully written to database.");
 	    }).catch(error => {

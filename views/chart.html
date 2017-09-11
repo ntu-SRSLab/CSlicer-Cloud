@@ -131,7 +131,14 @@
 	<div id="slice" class="tab-pane">
 	  <div class="panel panel-default">
 	    <div class="panel-heading">Slicing Results</div>
-	    <table id="results" class="display" width="100%"></table>
+	    <table id="results" class="display" width="100%">
+	      <!-- <thead> -->
+	      <!-- 	<tr> -->
+	      <!-- 	  <th>Entities</th> -->
+	      <!-- 	  <th>Significance</th> -->
+	      <!-- 	</tr> -->
+	      <!-- </thead> -->
+	    </table>
 	  </div>
 	</div>
       </div>
@@ -165,8 +172,8 @@
 		});
 	}
 
-</script>
-<script>
+    </script>
+    <script>
 	$(function () {
 		$('#jstree').on("changed.jstree", function (e, data) {
 			var i, j, r = [];
@@ -179,9 +186,8 @@
 			$('#jstree').jstree(true).open_node(data.selected);
 		});
 	});
-
-</script>
-<script>
+    </script>
+    <script>
 	var element = document.getElementById('drawhere');
 	var dataCallback = function (done) {
 		var xhr = new XMLHttpRequest();
@@ -245,9 +251,16 @@
 		{{#commitUrlTemplate }}createCommitUrl: commitUrl, {{/commitUrlTemplate}}
 						});
 
-</script>
-<script>
-  function goTo() {
+    </script>
+    <script>
+      function goTo() {
+      var table;
+      if ( $.fn.dataTable.isDataTable( '#results' ) ) {
+        table = $('#results').DataTable();
+        table.clear().draw();
+        table.destroy();
+      }
+
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -255,14 +268,15 @@
               GitFlowVisualize.drawing.annotateResults(response.simple);
 
               console.log(response);
-              $('#results').DataTable({
-                  data: response.full,
-                  columns: [
-                      {title: "Commits"}
-                  ] 
-              });
-          }
-      }
+
+          table = $('#results').DataTable({
+          data: response.full,
+          columns: [
+            {title: "Commits"},
+            {title: "Significance"}]
+          });
+      }}
+      
       xhr.open("POST", "{{& resultDataUrl}}");
       xhr.setRequestHeader("Content-Type", "application/json");
       var formData = {};
