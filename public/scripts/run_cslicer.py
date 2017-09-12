@@ -43,12 +43,16 @@ def runCSlicer(repo_path, start, end, tests, engine):
                    '-e', opt,
                    '-jq'], stdout=sub.PIPE, stderr=sub.PIPE)
     p.wait()
-
+    
     result = ''
-    for l in p.stdout.readlines():
-        if '[OUTPUT] RESULTS:' in l:
-            result = l[18:]
-            
+    with open('output.log', 'w') as logfile:
+        for l in p.stdout.readlines():
+            logfile.write(l)
+            if '[OUTPUT] RESULTS:' in l:
+                result = l[18:]
+        for l in p.stderr.readlines():
+            logfile.write(l)
+                
     #result['simple'] = ["3637948", "86e6c65"]
     #result['full'] = [["3637948"], ["86e6c65"]]
     #result['log'] = [repo_path, start, end, tests, engine, test_script, config_file]
