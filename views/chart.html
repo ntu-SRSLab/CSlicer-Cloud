@@ -110,7 +110,9 @@
 		</select>
 	      </div>
 	      <div class="form-group">
-		<button class="btn btn-default" type="submit">Submit</button>
+		<button class="btn btn-default" id="doslice"
+			data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Slicing"
+			type="submit">Submit</button>
 	      </div>
 	    </form>
 	  </div>
@@ -253,7 +255,7 @@
 
     </script>
     <script>
-      function goTo() {
+    function goTo() {
       var table;
       if ( $.fn.dataTable.isDataTable( '#results' ) ) {
         table = $('#results').DataTable();
@@ -261,6 +263,9 @@
         table.destroy();
       }
 
+      var submit = $('#doslice');
+      submit.button('loading');
+      
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -275,6 +280,8 @@
             {title: "Commits"},
             {title: "Significance"}]
           });
+
+          submit.button('reset');
       }}
       
       xhr.open("POST", "{{& resultDataUrl}}");
