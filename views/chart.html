@@ -178,7 +178,7 @@
 					r.push(data.instance.get_node(data.selected[i]).id);
 				}
 			}
-			document.getElementById('testcases').value = r.join(', ');
+			document.getElementById('testcases').value = r.join(',');
 			$('#jstree').jstree(true).open_node(data.selected);
 		});
 	});
