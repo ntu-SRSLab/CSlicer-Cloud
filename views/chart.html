@@ -134,12 +134,6 @@
 	  <div class="panel panel-default">
 	    <div class="panel-heading">Slicing Results</div>
 	    <table id="results" class="display" width="100%">
-	      <!-- <thead> -->
-	      <!-- 	<tr> -->
-	      <!-- 	  <th>Entities</th> -->
-	      <!-- 	  <th>Significance</th> -->
-	      <!-- 	</tr> -->
-	      <!-- </thead> -->
 	    </table>
 	  </div>
 	</div>
@@ -277,7 +271,7 @@
           table = $('#results').DataTable({
           data: response.full,
           columns: [
-            {title: "Commits"},
+            {title: "Entities"},
             {title: "Significance"}]
           });
 
