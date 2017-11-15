@@ -59,6 +59,19 @@ router.get('/project', function(req, res) {
     }
 });
 
+router.get('/sample', function(req, res) {
+    github.repos.getForUser({
+	username: 'liyistc'
+    }, function(err, result) {
+	res.render('project.ejs', {
+	    username: 'liyistc',
+	    profile: 'https://github.com/liyistc',
+	    repos: result.data,
+	    baseURL: config.baseURL
+	});
+    });
+});
+
 router.get('/:owner/:repo/chart/', function(req, res) {
     var owner = req.params['owner'];
     var repo = req.params['repo'];
