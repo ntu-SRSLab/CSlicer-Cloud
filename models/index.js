@@ -5,13 +5,16 @@ var path = require("path");
 var Sequelize = require("sequelize");
 var config = require("../config/config.js");
 
-var sequelize = new Sequelize(config.mysql.database,
-			      config.mysql.username,
-			      config.mysql.password, {
-				  host: config.mysql.host,
-				  port: config.mysql.port,
-				  dialect: 'mysql'
-			      });
+const sequelize = new Sequelize(config.mysql.database,
+				config.mysql.username,
+				config.mysql.password, {
+				    host: config.mysql.host,
+				    port: config.mysql.port,
+				    dialect: 'mysql'
+				},
+				{
+				    operatorsAliases: false
+				});
 var db = {};
 
 fs.readdirSync(__dirname)
