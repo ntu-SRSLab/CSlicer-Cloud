@@ -1,0 +1,3 @@
+1. Initialize mysql.
+2. Create a database called 'cslicer-db': create database `cslicer-db`;
+3. Run migration script: node_modules/.bin/sequelize db:migrate --config config/mysql.json

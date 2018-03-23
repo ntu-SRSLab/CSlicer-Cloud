@@ -30,7 +30,7 @@ def runCSlicer(repo_path, start, end, tests, engine):
     elif engine == 'combined':
         opt = 'refiner'
     else:
-        opt = 'refiner'
+        opt = 'slicer'
 
     test_script = genTestScript(tests, 'template.txt')
     config_file = genConfigFile(repo_path, start, end, test_script)
