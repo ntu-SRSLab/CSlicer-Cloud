@@ -19,6 +19,7 @@ function computeResults(toolConfig) {
 					      toolConfig.start,
 					      toolConfig.end,
 					      toolConfig.tests,
+					      toolConfig.excludes,
 					      toolConfig.engine], {
 		cwd: path.join(__dirname, "../public/scripts/"),
 		stdio: 'pipe'

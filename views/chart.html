@@ -97,8 +97,13 @@
 	      </div>
 	      <div class="form-group">
 		<label class="control-label" for="testcases">Test cases</label>
-		<input type="text" required required class="form-control" data-error="Please choose at least one test." data-minlength="3"
+		<input type="text" required class="form-control" data-error="Please choose at least one test." data-minlength="3"
 		       placeholder="Tests" name="testcases" id="testcases" />
+		<div class="help-block with-errors"></div>
+	      </div>
+	      <div class="form-group">
+		<label class="control-label" for="excludes">Excluded files</label>
+		<input type="text" class="form-control" name="excludes" id="excludes" />
 		<div class="help-block with-errors"></div>
 	      </div>
 	      <div class="form-group">
@@ -284,6 +289,7 @@
       formData['startcommit'] = document.getElementById('startcommit').value;
       formData['endcommit'] = document.getElementById('endcommit').value;
       formData['testcases'] = document.getElementById('testcases').value;
+      formData['excludes'] = document.getElementById('excludes').value;
       formData['slicingopt'] = document.getElementById('slicingopt').value;
   
       xhr.send(JSON.stringify(formData));

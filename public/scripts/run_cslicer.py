@@ -21,7 +21,7 @@ def which(program):
                 return exe_file
     return None
 
-def runCSlicer(repo_path, start, end, tests, engine):
+def runCSlicer(repo_path, start, end, tests, excludes, engine):
     opt = 'refiner'
     if engine == 'cslicer':
         opt = 'slicer'
@@ -33,7 +33,7 @@ def runCSlicer(repo_path, start, end, tests, engine):
         opt = 'slicer'
 
     test_script = genTestScript(tests, 'template.txt')
-    config_file = genConfigFile(repo_path, start, end, test_script)
+    config_file = genConfigFile(repo_path, start, end, excludes, test_script)
         
     java = which('java')
     p = sub.Popen([java,
@@ -64,7 +64,7 @@ def runCSlicer(repo_path, start, end, tests, engine):
     os.remove(config_file)
     
 
-def genConfigFile(repo_path, start, end, test_script):
+def genConfigFile(repo_path, start, end, excludes, test_script):
     config_file = None
     
     with tempfile.NamedTemporaryFile(suffix='.properties', delete=False) as configfile:
@@ -72,6 +72,8 @@ def genConfigFile(repo_path, start, end, test_script):
         configfile.write('startCommit=' + start + '\n');
         configfile.write('endCommit=' + end + '\n');
         configfile.write('buildScriptPath=' + test_script + '\n');
+        if not excludes == '':
+            configfile.write('excludePaths=' + excludes + '\n');
         configfile.flush()
         config_file = configfile.name
 

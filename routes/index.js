@@ -120,6 +120,7 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
     toolConfig.start = req.body.startcommit;
     toolConfig.end = req.body.endcommit;
     toolConfig.tests = req.body.testcases;
+    toolConfig.excludes = req.body.excludes;
     toolConfig.engine = req.body.slicingopt;
     
     maven.computeResults(toolConfig)
@@ -129,6 +130,7 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
 		start: toolConfig.start,
 		end: toolConfig.end,
 		tests: toolConfig.tests,
+		excludes: toolConfig.excludes,
 		engine: toolConfig.engine,
 		repo_path: toolConfig.repo_path,
 		result: "dummy results"
