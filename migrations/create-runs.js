@@ -20,6 +20,7 @@ module.exports = {
 		start: Sequelize.STRING,
 		end: Sequelize.STRING,
 		tests: Sequelize.STRING,
+		excludes: Sequelize.STRING,
 		result: Sequelize.STRING
 	    });
     },
