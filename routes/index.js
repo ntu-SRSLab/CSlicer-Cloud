@@ -92,6 +92,7 @@ router.get('/:owner/:repo/chart/', function(req, res) {
 	    data.testDataUrl = prefix + "/tests/";
 	    data.branchDataUrl = prefix + "/branches/";
 	    data.resultDataUrl = prefix + "/results/";
+	    data.commitUrlTemplate = "https://github.com/" + repo_name(owner, repo) + "/commit/#sha#";
 	    res.render('chart.html', data);
 	})
 	.catch((e)=>{
