@@ -32,11 +32,12 @@ function computeResults(toolConfig) {
 		result += data.toString();
 	    });
 	    cslicerRun.on('close', (code) => {
+		console.log("code: " + code);
+		console.log("result: " + result);
 		if (code !== 0) {
 		    console.log("CSlicer run failed");
 		    return;
 		}
-		console.log(result);
 		fulfill(result);
 	    });
 	    // fulfill('{"simple": ["3637948", "86e6c65"], "full": [["3637948"], ["86e6c65"]]}');

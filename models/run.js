@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
 	start: DataTypes.STRING,
 	end: DataTypes.STRING,
 	tests: DataTypes.STRING,
+	excludes: DataTypes.STRING,
 	result: DataTypes.STRING
 	// tests: DataTypes.ARRAY(DataTypes.STRING),
 	// result: DataTypes.ARRAY(DataTypes.STRING)

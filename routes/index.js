@@ -108,7 +108,9 @@ router.get('/:owner/:repo/tests/', function(req, res) {
 	        res.type('json');
 	        res.write(result);
 	        res.end();
-        });
+        }).catch(error => {
+	    console.log("Failed to extract tests.");
+	});
 });
 
 var jsonParser = bodyParser.json();
@@ -125,6 +127,7 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
     
     maven.computeResults(toolConfig)
 	.then((r)=>{
+	    // console.log(r);
 	    // write to database
 	    models.Run.create({
 		start: toolConfig.start,
@@ -145,6 +148,9 @@ router.post('/:owner/:repo/results/', jsonParser, function(req, res) {
 	    res.type('json');
 	    res.write(r);
 	    res.end();
+	}).catch(error => {
+	    console.log("Failed to compute slicing results.");
+	    res.status(500).send('No result.')
 	});
 });
 
@@ -159,7 +165,9 @@ router.get('/:owner/:repo/commits/', function(req, res) {
             res.type('json');
             res.write(JSON.stringify(result));
             res.end();
-        });
+        }).catch(error => {
+	    console.log("Failed to get base commit data.");
+	});
 });
 
 router.get('/:owner/:repo/branches/', function(req, res) {
@@ -174,7 +182,9 @@ router.get('/:owner/:repo/branches/', function(req, res) {
             res.type('json');
             res.write(JSON.stringify(result));
             res.end();
-        });
+        }).catch(error => {
+	    console.log("Failed to get branch tips.");
+	});
 });
 
 router.get('/:owner/:repo/commits/from/:commit', function (req, res) {
@@ -190,7 +200,9 @@ router.get('/:owner/:repo/commits/from/:commit', function (req, res) {
             res.type('json');
             res.write(JSON.stringify({values:result}));
             res.end();
-        });
+        }).catch(error => {
+	    console.log("Failed to get ancestor.");
+	});
 });
 
 module.exports = router;

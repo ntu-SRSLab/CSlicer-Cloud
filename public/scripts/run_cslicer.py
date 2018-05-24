@@ -22,23 +22,27 @@ def which(program):
     return None
 
 def runCSlicer(repo_path, start, end, tests, excludes, engine):
-    opt = 'refiner'
+    opt = 'slicer'
     if engine == 'cslicer':
         opt = 'slicer'
+        config_file = genCSlicerConfigFile(repo_path, start, end, excludes,
+                                           tests)
     elif engine == 'definer':
         opt = 'refiner'
+        config_file = genDefinerConfigFile(repo_path, start, end, excludes,
+                                           genTestScript(tests, 'template.txt'))
     elif engine == 'combined':
         opt = 'refiner'
     else:
         opt = 'slicer'
-
-    test_script = genTestScript(tests, 'template.txt')
-    config_file = genConfigFile(repo_path, start, end, excludes, test_script)
+        config_file = genCSlicerConfigFile(repo_path, start, end, excludes,
+                                           tests)
         
     java = which('java')
     p = sub.Popen([java,
                    '-jar',
-                   '/u/liyi/bit/gitslice/target/cslicer-1.0.0-jar-with-dependencies.jar',
+                   # '/u/liyi/bit/gitslice/target/cslicer-1.0.0-jar-with-dependencies.jar',
+                   '/Users/liyi/Documents/bit/gitref/target/cslicer-1.0.0-jar-with-dependencies.jar',
                    '-c', config_file,
                    '-e', opt,
                    '-jq'], stdout=sub.PIPE, stderr=sub.PIPE)
@@ -46,6 +50,7 @@ def runCSlicer(repo_path, start, end, tests, excludes, engine):
     
     result = ''
     with open('output.log', 'w') as logfile:
+        logfile.write(' '.join(sys.argv) + '\n')
         for l in p.stdout.readlines():
             logfile.write(l)
             if '[OUTPUT] RESULTS:' in l:
@@ -60,11 +65,26 @@ def runCSlicer(repo_path, start, end, tests, excludes, engine):
     print result.strip()
 
     # cleanning up
-    os.remove(test_script)
     os.remove(config_file)
+    # os.remove(test_script)
     
+def genCSlicerConfigFile(repo_path, start, end, excludes, tests):
+    config_file = None
 
-def genConfigFile(repo_path, start, end, excludes, test_script):
+    with tempfile.NamedTemporaryFile(suffix='.properties', delete=False) as configfile:
+        configfile.write('repoPath=' + os.path.join(repo_path, ".git") + '\n');
+        configfile.write('startCommit=' + start + '\n');
+        configfile.write('endCommit=' + end + '\n');
+        configfile.write('buildScriptPath=' + os.path.join(repo_path, 'pom.xml') + '\n');
+        configfile.write('testScope=' + tests + '\n');
+        if excludes != '':
+            configfile.write('excludePaths=' + excludes + '\n');
+        configfile.flush()
+        config_file = configfile.name
+
+    return config_file
+
+def genDefinerConfigFile(repo_path, start, end, excludes, test_script):
     config_file = None
     
     with tempfile.NamedTemporaryFile(suffix='.properties', delete=False) as configfile:
@@ -72,7 +92,7 @@ def genConfigFile(repo_path, start, end, excludes, test_script):
         configfile.write('startCommit=' + start + '\n');
         configfile.write('endCommit=' + end + '\n');
         configfile.write('buildScriptPath=' + test_script + '\n');
-        if not excludes == '':
+        if excludes != '':
             configfile.write('excludePaths=' + excludes + '\n');
         configfile.flush()
         config_file = configfile.name
@@ -97,6 +117,7 @@ if __name__ == '__main__':
     start = sys.argv[2]
     end = sys.argv[3]
     tests = sys.argv[4]
-    engine = sys.argv[5]
+    excludes = sys.argv[5]
+    engine = sys.argv[6]
 
-    runCSlicer(repo_path, start, end, tests, engine)
+    runCSlicer(repo_path, start, end, tests, excludes, engine)
