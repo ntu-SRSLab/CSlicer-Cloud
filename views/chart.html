@@ -111,7 +111,7 @@
 		<select id="slicingopt" name="slicingopt" class="form-control">
 		  <option value="cslicer">CSlicer</option>
 		  <option value="definer">Definer</option>
-		  <option value="combined">Combined</option>
+		  <!-- option value="combined">Combined</option -->
 		</select>
 	      </div>
 	      <div class="form-group">
@@ -271,7 +271,7 @@
               submit.button('reset');
     
               var response = JSON.parse(xhr.responseText);
-              GitFlowVisualize.drawing.annotateResults(response.simple);
+              GitFlowVisualize.drawing.annotateResults(response.simple, response.hunk);
 
               table = $('#results').DataTable({
                 data: response.full,

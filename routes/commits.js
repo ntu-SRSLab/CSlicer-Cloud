@@ -78,8 +78,7 @@ function getBaseCommitData(repo, options){
                             .then((tags)=> {
                                 result.tags.values = tags.filter((t)=> (t !== null));
                                 res(tags);
-                            });
-                        
+                            });                        
                     }));
 
                     return Promise.all(promises);

@@ -36,8 +36,7 @@ def runCSlicer(repo_path, start, end, tests, excludes, engine):
     else:
         opt = 'slicer'
         config_file = genCSlicerConfigFile(repo_path, start, end, excludes,
-                                           tests)
-        
+                                           tests)        
     java = which('java')
     p = sub.Popen([java,
                    '-jar',
@@ -57,11 +56,13 @@ def runCSlicer(repo_path, start, end, tests, excludes, engine):
                 result = l[18:]
         for l in p.stderr.readlines():
             logfile.write(l)
-                
-    #result['simple'] = ["3637948", "86e6c65"]
-    #result['full'] = [["3637948"], ["86e6c65"]]
+
+    # result = {}
+    # result['simple'] = ["74afb17", "9ae4b56", "09cf373"]
+    # result['hunk'] = ["09cf373"]
+    # result['full'] = [["09cf373"], ["86e6c65"]]
     #result['log'] = [repo_path, start, end, tests, engine, test_script, config_file]
-    #json_str = json.dumps(result)
+    # json_str = json.dumps(result)
     print result.strip()
 
     # cleanning up
