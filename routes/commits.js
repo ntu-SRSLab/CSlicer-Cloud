@@ -52,7 +52,7 @@ function getBaseCommitData(repo, options){
     var result = {branches:{values:[]}, tags:{values:[]}, commits:[]};
     return getCachedRepo(repo.path, {username:repo.username, password: repo.password}).then(
         (repo) => {
-            return repo.getReferences(git.Reference.TYPE.OID)
+            return repo.getReferences()
                 .then((refs)=>{
                     var promises = [];
                     promises.push(new Promise((res)=>{
@@ -89,7 +89,7 @@ function getBaseCommitData(repo, options){
 function getAllBranchTips(repo, options){
     return getCachedRepo(repo.path, {username:repo.username, password: repo.password}).then(
         (repo) => {
-            return repo.getReferences(git.Reference.TYPE.OID)
+            return repo.getReferences()
                 .then((refs)=>{
                     var branches = options.remotes ?
                             refs.filter(ref=>ref.isRemote()) :
