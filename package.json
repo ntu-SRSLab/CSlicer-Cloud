@@ -27,7 +27,7 @@
         "nodegit": "^0.26.1",
         "passport": "^0.4.0",
         "passport-github2": "^0.1.11",
-        "sequelize": "^4.37.8",
+        "sequelize": "^6.29.0",
         "sequelize-cli": "^5.5.0",
         "tmp": "0.0.33"
     }
